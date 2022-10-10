@@ -1,0 +1,12 @@
+>>> Warning 238 "C:\Users\keena\Dropbox\BIRDS5_FAB_PIC\PIC16F1789_registers.h" Line 27(2,5): Duplicate #locate
+>>> Warning 238 "C:\Users\keena\Dropbox\BIRDS5_FAB_PIC\PIC16F1789_registers.h" Line 192(2,5): Duplicate #locate
+>>> Warning 238 "C:\Users\keena\Dropbox\BIRDS5_FAB_PIC\PIC16F1789_registers.h" Line 203(2,5): Duplicate #locate
+>>> Warning 238 "C:\Users\keena\Dropbox\BIRDS5_FAB_PIC\PIC16F1789_registers.h" Line 232(2,5): Duplicate #locate
+>>> Warning 238 "C:\Users\keena\Dropbox\BIRDS5_FAB_PIC\PIC16F1789_registers.h" Line 234(2,5): Duplicate #locate
+>>> Warning 238 "C:\Users\keena\Dropbox\BIRDS5_FAB_PIC\PIC16F1789_registers.h" Line 398(2,5): Duplicate #locate
+>>> Warning 238 "C:\Users\keena\Dropbox\BIRDS5_FAB_PIC\PIC16F1789_registers.h" Line 416(2,5): Duplicate #locate
+>>> Warning 238 "C:\Users\keena\Dropbox\BIRDS5_FAB_PIC\PIC16F1789_registers.h" Line 434(2,5): Duplicate #locate
+>>> Warning 202 "C:\Users\keena\Dropbox\BIRDS5_FAB_PIC\define_func.c" Line 59(16,24): Variable never used:   temp_pZ1
+      Memory usage:   ROM=9%      RAM=5% - 16%
+      0 Errors,  9 Warnings.
+Build Successful.

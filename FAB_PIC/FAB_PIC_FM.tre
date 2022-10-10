@@ -1,0 +1,69 @@
+ÀÄFAB_PIC_FM
+   ÃÄMAIN  0/337  Ram=2
+   ³  ÃÄ@cinit1  (Inline)  Ram=0
+   ³  ÃÄkill_fab_forward  0/17  Ram=0
+   ³  ÃÄkill_OBC_forward  0/13  Ram=0
+   ³  ÃÄkill_fab_reverse  0/17  Ram=0
+   ³  ÃÄkill_OBC_reverse  0/13  Ram=0
+   ³  ÃÄkill_status  0/23  Ram=2
+   ³  ÃÄtemperature  0/122  Ram=2
+   ³  ³  ÃÄREAD_temp_CHANNEL  0/41  Ram=6
+   ³  ³  ³  ÃÄ@SPI_XFER_1  0/61  Ram=6
+   ³  ³  ³  ÀÄ@SPI_XFER_1  0/61  Ram=6
+   ³  ³  ÃÄREAD_temp_CHANNEL  0/41  Ram=6
+   ³  ³  ³  ÀÄ*
+   ³  ³  ÃÄREAD_temp_CHANNEL  0/41  Ram=6
+   ³  ³  ³  ÀÄ*
+   ³  ³  ÃÄREAD_temp_CHANNEL  0/41  Ram=6
+   ³  ³  ³  ÀÄ*
+   ³  ³  ÃÄREAD_temp_CHANNEL  0/41  Ram=6
+   ³  ³  ³  ÀÄ*
+   ³  ³  ÀÄREAD_temp_CHANNEL  0/41  Ram=6
+   ³  ³     ÀÄ*
+   ³  ÃÄvoltages  0/102  Ram=2
+   ³  ³  ÃÄREAD_vol_CHANNEL  0/41  Ram=6
+   ³  ³  ³  ÃÄ@SPI_XFER_1  0/61  Ram=6
+   ³  ³  ³  ÀÄ@SPI_XFER_1  0/61  Ram=6
+   ³  ³  ÃÄREAD_vol_CHANNEL  0/41  Ram=6
+   ³  ³  ³  ÀÄ*
+   ³  ³  ÃÄREAD_vol_CHANNEL  0/41  Ram=6
+   ³  ³  ³  ÀÄ*
+   ³  ³  ÃÄREAD_vol_CHANNEL  0/41  Ram=6
+   ³  ³  ³  ÀÄ*
+   ³  ³  ÀÄREAD_vol_CHANNEL  0/41  Ram=6
+   ³  ³     ÀÄ*
+   ³  ÃÄadc_FAB  0/175  Ram=2
+   ³  ³  ÃÄREAD_PIC_ADC16  0/326  Ram=206
+   ³  ³  ³  ÀÄ@DIV1616  (Inline)  Ram=5
+   ³  ³  ÃÄREAD_PIC_ADC16  0/326  Ram=206
+   ³  ³  ³  ÀÄ*
+   ³  ³  ÃÄREAD_PIC_ADC16  0/326  Ram=206
+   ³  ³  ³  ÀÄ*
+   ³  ³  ÃÄREAD_PIC_ADC16  0/326  Ram=206
+   ³  ³  ³  ÀÄ*
+   ³  ³  ÃÄREAD_PIC_ADC16  0/326  Ram=206
+   ³  ³  ³  ÀÄ*
+   ³  ³  ÃÄREAD_PIC_ADC16  0/326  Ram=206
+   ³  ³  ³  ÀÄ*
+   ³  ³  ÃÄREAD_PIC_ADC  0/44  Ram=4
+   ³  ³  ÃÄREAD_PIC_ADC  0/44  Ram=4
+   ³  ³  ÃÄREAD_PIC_ADC16  0/326  Ram=206
+   ³  ³  ³  ÀÄ*
+   ³  ³  ÃÄREAD_PIC_ADC  0/44  Ram=4
+   ³  ³  ÃÄREAD_PIC_ADC16  0/326  Ram=206
+   ³  ³  ³  ÀÄ*
+   ³  ³  ÀÄREAD_PIC_ADC  0/44  Ram=4
+   ³  ÃÄ@delay_ms1  0/22  Ram=1
+   ³  ÃÄkill_status  0/23  Ram=2
+   ³  ÃÄ@PUTCHARI_BIU_1  0/7  Ram=0
+   ³  ÃÄ@delay_ms1  0/22  Ram=1
+   ³  ÃÄCLR_FAB_DATA  0/19  Ram=3
+   ³  ÃÄ@delay_ms1  0/22  Ram=1
+   ³  ÃÄkill_fab_reverse  0/17  Ram=0
+   ³  ÃÄkill_OBC_reverse  0/13  Ram=0
+   ³  ÃÄ@delay_ms1  0/22  Ram=1
+   ³  ÃÄkill_fab_forward  0/17  Ram=0
+   ³  ÃÄkill_OBC_forward  0/13  Ram=0
+   ³  ÀÄ@delay_ms1  0/22  Ram=1
+   ÀÄserial_isr  0/23  Ram=0
+      ÀÄ@GETCH_BIU_1  (Inline)  Ram=0

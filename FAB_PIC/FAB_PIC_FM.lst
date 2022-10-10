@@ -1,0 +1,2711 @@
+CCS PCM C Compiler, Version 5.050, 5967               27-Jan-22 22:59
+
+               Filename:   C:\Users\keena\Dropbox\BIRDS5_FAB_PIC\FAB_PIC_FM.lst
+
+               ROM used:   1435 words (9%)
+                           Largest free fragment is 2048
+               RAM used:   108 (5%) at main() level
+                           331 (16%) worst case
+               Stack used: 3 locations (2 in main + 1 for interrupts)
+               Stack size: 16
+
+*
+0000:  MOVLP  00
+0001:  GOTO   44B
+0002:  NOP
+*
+0004:  CLRF   03
+0005:  MOVLP  00
+0006:  MOVLB  00
+0007:  MOVF   77,W
+0008:  MOVWF  20
+0009:  MOVF   78,W
+000A:  MOVWF  21
+000B:  MOVF   79,W
+000C:  MOVWF  22
+000D:  MOVF   7A,W
+000E:  MOVWF  23
+000F:  CLRF   05
+0010:  MOVLW  91
+0011:  MOVWF  04
+0012:  BTFSS  00.5
+0013:  GOTO   016
+0014:  BTFSC  11.5
+0015:  GOTO   01F
+0016:  MOVF   20,W
+0017:  MOVWF  77
+0018:  MOVF   21,W
+0019:  MOVWF  78
+001A:  MOVF   22,W
+001B:  MOVWF  79
+001C:  MOVF   23,W
+001D:  MOVWF  7A
+001E:  RETFIE
+001F:  MOVLP  00
+0020:  GOTO   021
+.................... #include <FAB_PIC_FM.h> 
+.................... #include <16F1789.h> 
+.................... //////////// Standard Header file for the PIC16F1789 device //////////////// 
+.................... /////////////////////////////////////////////////////////////////////////// 
+.................... ////        (C) Copyright 1996, 2014 Custom Computer Services          //// 
+.................... //// This source code may only be used by licensed users of the CCS C  //// 
+.................... //// compiler.  This source code may only be distributed to other      //// 
+.................... //// licensed users of the CCS C compiler.  No other use, reproduction //// 
+.................... //// or distribution is permitted without written permission.          //// 
+.................... //// Derivative programs created using this software in object code    //// 
+.................... //// form are not restricted in any way.                               //// 
+.................... /////////////////////////////////////////////////////////////////////////// 
+.................... #device PIC16F1789 
+*
+0312:  CLRF   78
+0313:  CLRF   79
+0314:  CLRF   77
+0315:  CLRF   7A
+0316:  MOVF   67,W
+0317:  BTFSS  03.2
+0318:  GOTO   31C
+0319:  MOVF   66,W
+031A:  BTFSC  03.2
+031B:  GOTO   336
+031C:  MOVLW  10
+031D:  MOVWF  68
+031E:  BCF    03.0
+031F:  RLF    64,F
+0320:  RLF    65,F
+0321:  RLF    77,F
+0322:  RLF    7A,F
+0323:  MOVF   67,W
+0324:  SUBWF  7A,W
+0325:  BTFSS  03.2
+0326:  GOTO   329
+0327:  MOVF   66,W
+0328:  SUBWF  77,W
+0329:  BTFSS  03.0
+032A:  GOTO   332
+032B:  MOVF   66,W
+032C:  SUBWF  77,F
+032D:  BTFSS  03.0
+032E:  DECF   7A,F
+032F:  MOVF   67,W
+0330:  SUBWF  7A,F
+0331:  BSF    03.0
+0332:  RLF    78,F
+0333:  RLF    79,F
+0334:  DECFSZ 68,F
+0335:  GOTO   31E
+....................  
+.................... #list 
+....................  
+.................... #device ADC = 12 
+.................... #use delay(internal=16MHz) 
+*
+041B:  MOVLW  20
+041C:  MOVWF  05
+041D:  MOVLW  65
+041E:  MOVWF  04
+041F:  MOVF   00,W
+0420:  BTFSC  03.2
+0421:  GOTO   430
+0422:  MOVLW  05
+0423:  MOVWF  78
+0424:  CLRF   77
+0425:  DECFSZ 77,F
+0426:  GOTO   425
+0427:  DECFSZ 78,F
+0428:  GOTO   424
+0429:  MOVLW  2E
+042A:  MOVWF  77
+042B:  DECFSZ 77,F
+042C:  GOTO   42B
+042D:  GOTO   42E
+042E:  DECFSZ 00,F
+042F:  GOTO   422
+0430:  RETURN
+.................... #include <PIC16F1789_registers.h> 
+.................... #byte INDF0 = 0x000 
+.................... #byte INDF1 = 0x001 
+.................... #byte PCL = 0x002 
+.................... #byte STATUS = 0x003 
+.................... #bit    C = STATUS.0 
+.................... #bit    DC = STATUS.1 
+.................... #bit    Z = STATUS.2 
+.................... #bit    PD = STATUS.3 
+.................... #bit    TO = STATUS.4 
+.................... #byte FSR0L = 0x004 
+.................... #byte FSR0H = 0x005 
+.................... #byte FSR1L = 0x006 
+.................... #byte FSR1H = 0x007 
+.................... #byte BSR = 0x008 
+.................... #byte WREG = 0x009 
+.................... #byte PCLATH = 0x00A 
+.................... #byte INTCON = 0x00B 
+.................... #bit    IOCIF = INTCON.0 
+.................... #bit    INTF = INTCON.1 
+.................... #bit    TMR0IF = INTCON.2 
+.................... #bit    IOCIE = INTCON.3 
+.................... #bit    INTE = INTCON.4 
+.................... #bit    TMR0IE = INTCON.5 
+.................... #bit    PEIE = INTCON.6 
+.................... #bit    GIE = INTCON.7 
+.................... #byte INTCON = 0x00B 
+.................... #bit    T0IF = INTCON.2 
+.................... #bit    T0IE = INTCON.5 
+.................... #byte PORTA = 0x00C 
+.................... #bit    RA0 = PORTA.0 
+.................... #bit    RA1 = PORTA.1 
+.................... #bit    RA2 = PORTA.2 
+.................... #bit    RA3 = PORTA.3 
+.................... #bit    RA4 = PORTA.4 
+.................... #bit    RA5 = PORTA.5 
+.................... #bit    RA6 = PORTA.6 
+.................... #bit    RA7 = PORTA.7 
+.................... #byte PORTB = 0x00D 
+.................... #bit    RB0 = PORTB.0 
+.................... #bit    RB1 = PORTB.1 
+.................... #bit    RB2 = PORTB.2 
+.................... #bit    RB3 = PORTB.3 
+.................... #bit    RB4 = PORTB.4 
+.................... #bit    RB5 = PORTB.5 
+.................... #bit    RB6 = PORTB.6 
+.................... #bit    RB7 = PORTB.7 
+.................... #byte PORTC = 0x00E 
+.................... #bit    RC0 = PORTC.0 
+.................... #bit    RC1 = PORTC.1 
+.................... #bit    RC2 = PORTC.2 
+.................... #bit    RC3 = PORTC.3 
+.................... #bit    RC4 = PORTC.4 
+.................... #bit    RC5 = PORTC.5 
+.................... #bit    RC6 = PORTC.6 
+.................... #bit    RC7 = PORTC.7 
+.................... #byte PORTD = 0x00F 
+.................... #bit    RD0 = PORTD.0 
+.................... #bit    RD1 = PORTD.1 
+.................... #bit    RD2 = PORTD.2 
+.................... #bit    RD3 = PORTD.3 
+.................... #bit    RD4 = PORTD.4 
+.................... #bit    RD5 = PORTD.5 
+.................... #bit    RD6 = PORTD.6 
+.................... #bit    RD7 = PORTD.7 
+.................... #byte PORTE = 0x010 
+.................... #byte PIR1 = 0x011 
+.................... #bit    TMR1IF = PIR1.0 
+.................... #bit    TMR2IF = PIR1.1 
+.................... #bit    CCP1IF = PIR1.2 
+.................... #bit    SSP1IF = PIR1.3 
+.................... #bit    TXIF = PIR1.4 
+.................... #bit    RCIF = PIR1.5 
+.................... #bit    ADIF = PIR1.6 
+.................... #bit    TMR1GIF = PIR1.7 
+.................... #byte PIR2 = 0x012 
+.................... #bit    CCP2IF = PIR2.0 
+.................... #bit    C3IF = PIR2.1 
+.................... #bit    C4IF = PIR2.2 
+.................... #bit    BCL1IF = PIR2.3 
+.................... #bit    EEIF = PIR2.4 
+.................... #bit    C1IF = PIR2.5 
+.................... #bit    C2IF = PIR2.6 
+.................... #bit    OSFIF = PIR2.7 
+.................... #byte PIR3 = 0x013 
+.................... #bit    CCP3IF = PIR3.4 
+.................... #byte PIR4 = 0x014 
+.................... #bit    PSMC1SIF = PIR4.0 
+.................... #bit    PSMC2SIF = PIR4.1 
+.................... #bit    PSMC3SIF = PIR4.2 
+.................... #bit    PSMC4SIF = PIR4.3 
+.................... #bit    PSMC1TIF = PIR4.4 
+.................... #bit    PSMC2TIF = PIR4.5 
+.................... #bit    PSMC3TIF = PIR4.6 
+.................... #bit    PSMC4TIF = PIR4.7 
+.................... #byte TMR0 = 0x015 
+.................... #byte TMR1L = 0x016 
+.................... #byte TMR1H = 0x017 
+.................... #byte T1CON = 0x018 
+.................... #bit    TMR1ON = T1CON.0 
+.................... #bit    T1SYNC = T1CON.2 
+.................... #bit    T1OSCEN = T1CON.3 
+.................... #bit    T1CKPS0 = T1CON.4 
+.................... #bit    T1CKPS1 = T1CON.5 
+.................... #bit    TMR1CS0 = T1CON.6 
+.................... #bit    TMR1CS1 = T1CON.7 
+.................... #byte T1GCON = 0x019 
+.................... #bit    T1GSS0 = T1GCON.0 
+.................... #bit    T1GSS1 = T1GCON.1 
+.................... #bit    T1GVAL = T1GCON.2 
+.................... #bit    T1GGO = T1GCON.3 
+.................... #bit    T1GSPM = T1GCON.4 
+.................... #bit    T1GTM = T1GCON.5 
+.................... #bit    T1GPOL = T1GCON.6 
+.................... #bit    TMR1GE = T1GCON.7 
+.................... #byte TMR2 = 0x01A 
+.................... #byte PR2 = 0x01B 
+.................... #byte T2CON = 0x01C 
+.................... #bit    T2CKPS0 = T2CON.0 
+.................... #bit    T2CKPS1 = T2CON.1 
+.................... #bit    TMR2ON = T2CON.2 
+.................... #bit    T2OUTPS0 = T2CON.3 
+.................... #bit    T2OUTPS1 = T2CON.4 
+.................... #bit    T2OUTPS2 = T2CON.5 
+.................... #bit    T2OUTPS3 = T2CON.6 
+.................... #byte TRISA = 0x08C 
+.................... #bit    TRISA0 = TRISA.0 
+.................... #bit    TRISA1 = TRISA.1 
+.................... #bit    TRISA2 = TRISA.2 
+.................... #bit    TRISA3 = TRISA.3 
+.................... #bit    TRISA4 = TRISA.4 
+.................... #bit    TRISA5 = TRISA.5 
+.................... #bit    TRISA6 = TRISA.6 
+.................... #bit    TRISA7 = TRISA.7 
+.................... #byte TRISB = 0x08D 
+.................... #bit    TRISB0 = TRISB.0 
+.................... #bit    TRISB1 = TRISB.1 
+.................... #bit    TRISB2 = TRISB.2 
+.................... #bit    TRISB3 = TRISB.3 
+.................... #bit    TRISB4 = TRISB.4 
+.................... #bit    TRISB5 = TRISB.5 
+.................... #bit    TRISB6 = TRISB.6 
+.................... #bit    TRISB7 = TRISB.7 
+.................... #byte TRISC = 0x08E 
+.................... #bit    TRISC0 = TRISC.0 
+.................... #bit    TRISC1 = TRISC.1 
+.................... #bit    TRISC2 = TRISC.2 
+.................... #bit    TRISC3 = TRISC.3 
+.................... #bit    TRISC4 = TRISC.4 
+.................... #bit    TRISC5 = TRISC.5 
+.................... #bit    TRISC6 = TRISC.6 
+.................... #bit    TRISC7 = TRISC.7 
+.................... #byte TRISD = 0x08F 
+.................... #bit    TRISD0 = TRISD.0 
+.................... #bit    TRISD1 = TRISD.1 
+.................... #bit    TRISD2 = TRISD.2 
+.................... #bit    TRISD3 = TRISD.3 
+.................... #bit    TRISD4 = TRISD.4 
+.................... #bit    TRISD5 = TRISD.5 
+.................... #bit    TRISD6 = TRISD.6 
+.................... #bit    TRISD7 = TRISD.7 
+.................... #byte TRISE = 0x090 
+.................... #byte PIE1 = 0x091 
+.................... #bit    TMR1IE = PIE1.0 
+.................... #bit    TMR2IE = PIE1.1 
+.................... #bit    CCP1IE = PIE1.2 
+.................... #bit    SSP1IE = PIE1.3 
+.................... #bit    TXIE = PIE1.4 
+.................... #bit    RCIE = PIE1.5 
+.................... #bit    ADIE = PIE1.6 
+.................... #bit    TMR1GIE = PIE1.7 
+.................... #byte PIE2 = 0x092 
+.................... #bit    CCP2IE = PIE2.0 
+.................... #bit    C3IE = PIE2.1 
+.................... #bit    C4IE = PIE2.2 
+.................... #bit    BCL1IE = PIE2.3 
+.................... #bit    EEIE = PIE2.4 
+.................... #bit    C1IE = PIE2.5 
+.................... #bit    C2IE = PIE2.6 
+.................... #bit    OSFIE = PIE2.7 
+.................... #byte PIE3 = 0x093 
+.................... #bit    CCP3IE = PIE3.4 
+.................... #byte PIE4 = 0x094 
+.................... #bit    PSMC1SIE = PIE4.0 
+.................... #bit    PSMC2SIE = PIE4.1 
+.................... #bit    PSMC3SIE = PIE4.2 
+.................... #bit    PSMC4SIE = PIE4.3 
+.................... #bit    PSMC1TIE = PIE4.4 
+.................... #bit    PSMC2TIE = PIE4.5 
+.................... #bit    PSMC3TIE = PIE4.6 
+.................... #bit    PSMC4TIE = PIE4.7 
+.................... #byte PIE4 = 0x094 
+.................... #bit    PMSC3TIE = PIE4.6 
+.................... #byte OPTION_REG = 0x095 
+.................... #bit    PS0 = OPTION_REG.0 
+.................... #bit    PS1 = OPTION_REG.1 
+.................... #bit    PS2 = OPTION_REG.2 
+.................... #bit    PSA = OPTION_REG.3 
+.................... #bit    TMR0SE = OPTION_REG.4 
+.................... #bit    TMR0CS = OPTION_REG.5 
+.................... #bit    INTEDG = OPTION_REG.6 
+.................... #bit    WPUEN = OPTION_REG.7 
+.................... #byte OPTION_REG = 0x095 
+.................... #bit    T0SE = OPTION_REG.4 
+.................... #bit    T0CS = OPTION_REG.5 
+.................... #byte PCON = 0x096 
+.................... #bit    BOR = PCON.0 
+.................... #bit    POR = PCON.1 
+.................... #bit    RI = PCON.2 
+.................... #bit    RMCLR = PCON.3 
+.................... #bit    RWDT = PCON.4 
+.................... #bit    STKUNF = PCON.6 
+.................... #bit    STKOVF = PCON.7 
+.................... #byte WDTCON = 0x097 
+.................... #bit    SWDTEN = WDTCON.0 
+.................... #bit    WDTPS0 = WDTCON.1 
+.................... #bit    WDTPS1 = WDTCON.2 
+.................... #bit    WDTPS2 = WDTCON.3 
+.................... #bit    WDTPS3 = WDTCON.4 
+.................... #bit    WDTPS4 = WDTCON.5 
+.................... #byte ADRESL = 0x09B 
+.................... #byte ADRESH = 0x09C 
+.................... #byte ADCON0 = 0x09D 
+.................... #bit    ADON = ADCON0.0 
+.................... #bit    GO = ADCON0.1 
+.................... #bit    CHS0 = ADCON0.2 
+.................... #bit    CHS1 = ADCON0.3 
+.................... #bit    CHS2 = ADCON0.4 
+.................... #bit    CHS3 = ADCON0.5 
+.................... #bit    CHS4 = ADCON0.6 
+.................... #bit    ADRMD = ADCON0.7 
+.................... #byte ADCON0 = 0x09D 
+.................... #bit    ADGO = ADCON0.1 
+.................... #byte ADCON0 = 0x09D 
+.................... #bit    DONE = ADCON0.1 
+.................... #byte ADCON1 = 0x09E 
+.................... #bit    ADPREF0 = ADCON1.0 
+.................... #bit    ADPREF1 = ADCON1.1 
+.................... #bit    ADNREF = ADCON1.2 
+.................... #bit    ADCS0 = ADCON1.4 
+.................... #bit    ADCS1 = ADCON1.5 
+.................... #bit    ADCS2 = ADCON1.6 
+.................... #bit    ADFM = ADCON1.7 
+.................... #byte ADCON2 = 0x09F 
+.................... #bit    CHSN0 = ADCON2.0 
+.................... #bit    CHSN1 = ADCON2.1 
+.................... #bit    CHSN2 = ADCON2.2 
+.................... #bit    CHSN3 = ADCON2.3 
+.................... #bit    TRIGSEL0 = ADCON2.4 
+.................... #bit    TRIGSEL1 = ADCON2.5 
+.................... #bit    TRIGSEL2 = ADCON2.6 
+.................... #bit    TRIGSEL3 = ADCON2.7 
+.................... #byte LATA = 0x10C 
+.................... #bit    LATA0 = LATA.0 
+.................... #bit    LATA1 = LATA.1 
+.................... #bit    LATA2 = LATA.2 
+.................... #bit    LATA3 = LATA.3 
+.................... #bit    LATA4 = LATA.4 
+.................... #bit    LATA5 = LATA.5 
+.................... #bit    LATA6 = LATA.6 
+.................... #bit    LATA7 = LATA.7 
+.................... #byte LATB = 0x10D 
+.................... #bit    LATB0 = LATB.0 
+.................... #bit    LATB1 = LATB.1 
+.................... #bit    LATB2 = LATB.2 
+.................... #bit    LATB3 = LATB.3 
+.................... #bit    LATB4 = LATB.4 
+.................... #bit    LATB5 = LATB.5 
+.................... #bit    LATB6 = LATB.6 
+.................... #bit    LATB7 = LATB.7 
+.................... #byte LATC = 0x10E 
+.................... #bit    LATC0 = LATC.0 
+.................... #bit    LATC1 = LATC.1 
+.................... #bit    LATC2 = LATC.2 
+.................... #bit    LATC3 = LATC.3 
+.................... #bit    LATC4 = LATC.4 
+.................... #bit    LATC5 = LATC.5 
+.................... #bit    LATC6 = LATC.6 
+.................... #bit    LATC7 = LATC.7 
+.................... #byte LATD = 0x10F 
+.................... #bit    LATD0 = LATD.0 
+.................... #bit    LATD1 = LATD.1 
+.................... #bit    LATD2 = LATD.2 
+.................... #bit    LATD3 = LATD.3 
+.................... #bit    LATD4 = LATD.4 
+.................... #bit    LATD5 = LATD.5 
+.................... #bit    LATD6 = LATD.6 
+.................... #bit    LATD7 = LATD.7 
+.................... #byte LATE = 0x110 
+.................... #byte APFCON2 = 0x11C 
+.................... #bit    CCP3SEL = APFCON2.0 
+.................... #bit    SSSEL0 = APFCON2.1 
+.................... #bit    SSSEL1 = APFCON2.2 
+.................... #byte APFCON1 = 0x11D 
+.................... #bit    CCP2SEL = APFCON1.0 
+.................... #bit    RXSEL = APFCON1.1 
+.................... #bit    TXSEL = APFCON1.2 
+.................... #bit    SDISEL = APFCON1.3 
+.................... #bit    SCKSEL = APFCON1.4 
+.................... #bit    SDOSEL = APFCON1.5 
+.................... #bit    CCP1SEL = APFCON1.6 
+.................... #bit    C2OUTSEL = APFCON1.7 
+.................... #byte ANSELA = 0x18C 
+.................... #bit    ANSA0 = ANSELA.0 
+.................... #bit    ANSA1 = ANSELA.1 
+.................... #bit    ANSA2 = ANSELA.2 
+.................... #bit    ANSA3 = ANSELA.3 
+.................... #bit    ANSA4 = ANSELA.4 
+.................... #bit    ANSA5 = ANSELA.5 
+.................... #bit    ANSA7 = ANSELA.7 
+.................... #byte ANSELB = 0x18D 
+.................... #byte ANSELC = 0x18E 
+.................... #bit    ANSC0 = ANSELC.0 
+.................... #bit    ANSC1 = ANSELC.1 
+.................... #bit    ANSC2 = ANSELC.2 
+.................... #bit    ANSC3 = ANSELC.3 
+.................... #bit    ANSC4 = ANSELC.4 
+.................... #bit    ANSC5 = ANSELC.5 
+.................... #bit    ANSC6 = ANSELC.6 
+.................... #bit    ANSC7 = ANSELC.7 
+.................... #byte ANSELD = 0x18F 
+.................... #byte ANSELE = 0x190 
+.................... #byte RC1REG = 0x199 
+.................... #byte TX1REG = 0x19A 
+.................... #byte SP1BRGL = 0x19B 
+.................... #byte SP1BRGH = 0x19C 
+.................... #byte RC1STA = 0x19D 
+.................... #bit    RX9D = RC1STA.0 
+.................... #bit    OERR = RC1STA.1 
+.................... #bit    FERR = RC1STA.2 
+.................... #bit    ADDEN = RC1STA.3 
+.................... #bit    CREN = RC1STA.4 
+.................... #bit    SREN = RC1STA.5 
+.................... #bit    RX9 = RC1STA.6 
+.................... #bit    SPEN = RC1STA.7 
+.................... #byte TX1STA = 0x19E 
+.................... #bit    TX9D = TX1STA.0 
+.................... #bit    TRMT = TX1STA.1 
+.................... #bit    BRGH = TX1STA.2 
+.................... #bit    SENDB = TX1STA.3 
+.................... #bit    SYNC = TX1STA.4 
+.................... #bit    TXEN = TX1STA.5 
+.................... #bit    TX9 = TX1STA.6 
+.................... #bit    CSRC = TX1STA.7 
+.................... #byte BAUD1CON = 0x19F 
+.................... #bit    ABDEN = BAUD1CON.0 
+.................... #bit    WUE = BAUD1CON.1 
+.................... #bit    BRG16 = BAUD1CON.2 
+.................... #bit    SCKP = BAUD1CON.3 
+.................... #bit    RCIDL = BAUD1CON.4 
+.................... #bit    ABDOVF = BAUD1CON.5 
+.................... #byte WPUA = 0x20C 
+.................... #bit    WPUA0 = WPUA.0 
+.................... #bit    WPUA1 = WPUA.1 
+.................... #bit    WPUA2 = WPUA.2 
+.................... #bit    WPUA3 = WPUA.3 
+.................... #bit    WPUA4 = WPUA.4 
+.................... #bit    WPUA5 = WPUA.5 
+.................... #bit    WPUA6 = WPUA.6 
+.................... #bit    WPUA7 = WPUA.7 
+.................... #byte WPUB = 0x20D 
+.................... #bit    WPUB0 = WPUB.0 
+.................... #bit    WPUB1 = WPUB.1 
+.................... #bit    WPUB2 = WPUB.2 
+.................... #bit    WPUB3 = WPUB.3 
+.................... #bit    WPUB4 = WPUB.4 
+.................... #bit    WPUB5 = WPUB.5 
+.................... #bit    WPUB6 = WPUB.6 
+.................... #bit    WPUB7 = WPUB.7 
+.................... #byte WPUC = 0x20E 
+.................... #bit    WPUC0 = WPUC.0 
+.................... #bit    WPUC1 = WPUC.1 
+.................... #bit    WPUC2 = WPUC.2 
+.................... #bit    WPUC3 = WPUC.3 
+.................... #bit    WPUC4 = WPUC.4 
+.................... #bit    WPUC5 = WPUC.5 
+.................... #bit    WPUC6 = WPUC.6 
+.................... #bit    WPUC7 = WPUC.7 
+.................... #byte WPUD = 0x20F 
+.................... #bit    WPUD0 = WPUD.0 
+.................... #bit    WPUD1 = WPUD.1 
+.................... #bit    WPUD2 = WPUD.2 
+.................... #bit    WPUD3 = WPUD.3 
+.................... #bit    WPUD4 = WPUD.4 
+.................... #bit    WPUD5 = WPUD.5 
+.................... #bit    WPUD6 = WPUD.6 
+.................... #bit    WPUD7 = WPUD.7 
+.................... #byte WPUE = 0x210 
+.................... #byte SSP1BUF = 0x211 
+.................... #bit    SSP1BUF0 = SSP1BUF.0 
+.................... #bit    SSP1BUF1 = SSP1BUF.1 
+.................... #bit    SSP1BUF2 = SSP1BUF.2 
+.................... #bit    SSP1BUF3 = SSP1BUF.3 
+.................... #bit    SSP1BUF4 = SSP1BUF.4 
+.................... #bit    SSP1BUF5 = SSP1BUF.5 
+.................... #bit    SSP1BUF6 = SSP1BUF.6 
+.................... #bit    SSP1BUF7 = SSP1BUF.7 
+.................... #byte SSP1BUF = 0x211 
+.................... #bit    BUF0 = SSP1BUF.0 
+.................... #bit    BUF1 = SSP1BUF.1 
+.................... #bit    BUF2 = SSP1BUF.2 
+.................... #bit    BUF3 = SSP1BUF.3 
+.................... #bit    BUF4 = SSP1BUF.4 
+.................... #bit    BUF5 = SSP1BUF.5 
+.................... #bit    BUF6 = SSP1BUF.6 
+.................... #bit    BUF7 = SSP1BUF.7 
+.................... #byte SSP1ADD = 0x212 
+.................... #bit    SSP1ADD0 = SSP1ADD.0 
+.................... #bit    SSP1ADD1 = SSP1ADD.1 
+.................... #bit    SSP1ADD2 = SSP1ADD.2 
+.................... #bit    SSP1ADD3 = SSP1ADD.3 
+.................... #bit    SSP1ADD4 = SSP1ADD.4 
+.................... #bit    SSP1ADD5 = SSP1ADD.5 
+.................... #bit    SSP1ADD6 = SSP1ADD.6 
+.................... #bit    SSP1ADD7 = SSP1ADD.7 
+.................... #byte SSP1ADD = 0x212 
+.................... #bit    ADD0 = SSP1ADD.0 
+.................... #bit    ADD1 = SSP1ADD.1 
+.................... #bit    ADD2 = SSP1ADD.2 
+.................... #bit    ADD3 = SSP1ADD.3 
+.................... #bit    ADD4 = SSP1ADD.4 
+.................... #bit    ADD5 = SSP1ADD.5 
+.................... #bit    ADD6 = SSP1ADD.6 
+.................... #bit    ADD7 = SSP1ADD.7 
+.................... #byte SSP1MSK = 0x213 
+.................... #bit    SSP1MSK0 = SSP1MSK.0 
+.................... #bit    SSP1MSK1 = SSP1MSK.1 
+.................... #bit    SSP1MSK2 = SSP1MSK.2 
+.................... #bit    SSP1MSK3 = SSP1MSK.3 
+.................... #bit    SSP1MSK4 = SSP1MSK.4 
+.................... #bit    SSP1MSK5 = SSP1MSK.5 
+.................... #bit    SSP1MSK6 = SSP1MSK.6 
+.................... #bit    SSP1MSK7 = SSP1MSK.7 
+.................... #byte SSP1MSK = 0x213 
+.................... #bit    MSK0 = SSP1MSK.0 
+.................... #bit    MSK1 = SSP1MSK.1 
+.................... #bit    MSK2 = SSP1MSK.2 
+.................... #bit    MSK3 = SSP1MSK.3 
+.................... #bit    MSK4 = SSP1MSK.4 
+.................... #bit    MSK5 = SSP1MSK.5 
+.................... #bit    MSK6 = SSP1MSK.6 
+.................... #bit    MSK7 = SSP1MSK.7 
+.................... #byte SSP1STAT = 0x214 
+.................... #bit    BF = SSP1STAT.0 
+.................... #bit    UA = SSP1STAT.1 
+.................... #bit    R = SSP1STAT.2 
+.................... #bit    S = SSP1STAT.3 
+.................... #bit    P = SSP1STAT.4 
+.................... #bit    D = SSP1STAT.5 
+.................... #bit    CKE = SSP1STAT.6 
+.................... #bit    SMP = SSP1STAT.7 
+.................... #byte SSP1CON1 = 0x215 
+.................... #bit    SSPM0 = SSP1CON1.0 
+.................... #bit    SSPM1 = SSP1CON1.1 
+.................... #bit    SSPM2 = SSP1CON1.2 
+.................... #bit    SSPM3 = SSP1CON1.3 
+.................... #bit    CKP = SSP1CON1.4 
+.................... #bit    SSPEN = SSP1CON1.5 
+.................... #bit    SSPOV = SSP1CON1.6 
+.................... #bit    WCOL = SSP1CON1.7 
+.................... #byte SSP1CON2 = 0x216 
+.................... #bit    SEN = SSP1CON2.0 
+.................... #bit    RSEN = SSP1CON2.1 
+.................... #bit    PEN = SSP1CON2.2 
+.................... #bit    RCEN = SSP1CON2.3 
+.................... #bit    ACKEN = SSP1CON2.4 
+.................... #bit    ACKDT = SSP1CON2.5 
+.................... #bit    ACKSTAT = SSP1CON2.6 
+.................... #bit    GCEN = SSP1CON2.7 
+.................... #byte SSP1CON3 = 0x217 
+.................... #bit    DHEN = SSP1CON3.0 
+.................... #bit    AHEN = SSP1CON3.1 
+.................... #bit    SBCDE = SSP1CON3.2 
+.................... #bit    SDAHT = SSP1CON3.3 
+.................... #bit    BOEN = SSP1CON3.4 
+.................... #bit    SCIE = SSP1CON3.5 
+.................... #bit    PCIE = SSP1CON3.6 
+.................... #bit    ACKTIM = SSP1CON3.7 
+.................... #byte ODCONA = 0x28C 
+.................... #bit    ODCONA0 = ODCONA.0 
+.................... #bit    ODCONA1 = ODCONA.1 
+.................... #bit    ODCONA2 = ODCONA.2 
+.................... #bit    ODCONA3 = ODCONA.3 
+.................... #bit    ODCONA4 = ODCONA.4 
+.................... #bit    ODCONA5 = ODCONA.5 
+.................... #bit    ODCONA6 = ODCONA.6 
+.................... #bit    ODCONA7 = ODCONA.7 
+.................... #byte ODCONB = 0x28D 
+.................... #bit    ODCONB0 = ODCONB.0 
+.................... #bit    ODCONB1 = ODCONB.1 
+.................... #bit    ODCONB2 = ODCONB.2 
+.................... #bit    ODCONB3 = ODCONB.3 
+.................... #bit    ODCONB4 = ODCONB.4 
+.................... #bit    ODCONB5 = ODCONB.5 
+.................... #bit    ODCONB6 = ODCONB.6 
+.................... #bit    ODCONB7 = ODCONB.7 
+.................... #byte ODCONC = 0x28E 
+.................... #bit    ODCONC0 = ODCONC.0 
+.................... #bit    ODCONC1 = ODCONC.1 
+.................... #bit    ODCONC2 = ODCONC.2 
+.................... #bit    ODCONC3 = ODCONC.3 
+.................... #bit    ODCONC4 = ODCONC.4 
+.................... #bit    ODCONC5 = ODCONC.5 
+.................... #bit    ODCONC6 = ODCONC.6 
+.................... #bit    ODCONC7 = ODCONC.7 
+.................... #byte ODCOND = 0x28F 
+.................... #bit    ODCOND0 = ODCOND.0 
+.................... #bit    ODCOND1 = ODCOND.1 
+.................... #bit    ODCOND2 = ODCOND.2 
+.................... #bit    ODCOND3 = ODCOND.3 
+.................... #bit    ODCOND4 = ODCOND.4 
+.................... #bit    ODCOND5 = ODCOND.5 
+.................... #bit    ODCOND6 = ODCOND.6 
+.................... #bit    ODCOND7 = ODCOND.7 
+.................... #byte ODCONE = 0x290 
+.................... #byte SLRCONA = 0x30C 
+.................... #bit    SLRCONA0 = SLRCONA.0 
+.................... #bit    SLRCONA1 = SLRCONA.1 
+.................... #bit    SLRCONA2 = SLRCONA.2 
+.................... #bit    SLRCONA3 = SLRCONA.3 
+.................... #bit    SLRCONA4 = SLRCONA.4 
+.................... #bit    SLRCONA5 = SLRCONA.5 
+.................... #bit    SLRCONA6 = SLRCONA.6 
+.................... #bit    SLRCONA7 = SLRCONA.7 
+.................... #byte SLRCONB = 0x30D 
+.................... #bit    SLRCONB0 = SLRCONB.0 
+.................... #bit    SLRCONB1 = SLRCONB.1 
+.................... #bit    SLRCONB2 = SLRCONB.2 
+.................... #bit    SLRCONB3 = SLRCONB.3 
+.................... #bit    SLRCONB4 = SLRCONB.4 
+.................... #bit    SLRCONB5 = SLRCONB.5 
+.................... #bit    SLRCONB6 = SLRCONB.6 
+.................... #bit    SLRCONB7 = SLRCONB.7 
+.................... #byte SLRCONC = 0x30E 
+.................... #bit    SLRCONC0 = SLRCONC.0 
+.................... #bit    SLRCONC1 = SLRCONC.1 
+.................... #bit    SLRCONC2 = SLRCONC.2 
+.................... #bit    SLRCONC3 = SLRCONC.3 
+.................... #bit    SLRCONC4 = SLRCONC.4 
+.................... #bit    SLRCONC5 = SLRCONC.5 
+.................... #bit    SLRCONC6 = SLRCONC.6 
+.................... #bit    SLRCONC7 = SLRCONC.7 
+.................... #byte SLRCOND = 0x30F 
+.................... #bit    SLRCOND0 = SLRCOND.0 
+.................... #bit    SLRCOND1 = SLRCOND.1 
+.................... #bit    SLRCOND2 = SLRCOND.2 
+.................... #bit    SLRCOND3 = SLRCOND.3 
+.................... #bit    SLRCOND4 = SLRCOND.4 
+.................... #bit    SLRCOND5 = SLRCOND.5 
+.................... #bit    SLRCOND6 = SLRCOND.6 
+.................... #bit    SLRCOND7 = SLRCOND.7 
+.................... #byte SLRCONE = 0x310 
+.................... #byte INLVLA = 0x38C 
+.................... #bit    INLVLA0 = INLVLA.0 
+.................... #bit    INLVLA1 = INLVLA.1 
+.................... #bit    INLVLA2 = INLVLA.2 
+.................... #bit    INLVLA3 = INLVLA.3 
+.................... #bit    INLVLA4 = INLVLA.4 
+.................... #bit    INLVLA5 = INLVLA.5 
+.................... #bit    INLVLA6 = INLVLA.6 
+.................... #bit    INLVLA7 = INLVLA.7 
+.................... #byte INLVLB = 0x38D 
+.................... #bit    INLVLB0 = INLVLB.0 
+.................... #bit    INLVLB1 = INLVLB.1 
+.................... #bit    INLVLB2 = INLVLB.2 
+.................... #bit    INLVLB3 = INLVLB.3 
+.................... #bit    INLVLB4 = INLVLB.4 
+.................... #bit    INLVLB5 = INLVLB.5 
+.................... #bit    INLVLB6 = INLVLB.6 
+.................... #bit    INLVLB7 = INLVLB.7 
+.................... #byte INLVLC = 0x38E 
+.................... #bit    INLVLC0 = INLVLC.0 
+.................... #bit    INLVLC1 = INLVLC.1 
+.................... #bit    INLVLC2 = INLVLC.2 
+.................... #bit    INLVLC3 = INLVLC.3 
+.................... #bit    INLVLC4 = INLVLC.4 
+.................... #bit    INLVLC5 = INLVLC.5 
+.................... #bit    INLVLC6 = INLVLC.6 
+.................... #bit    INLVLC7 = INLVLC.7 
+.................... #byte INLVLD = 0x38F 
+.................... #bit    INLVLD0 = INLVLD.0 
+.................... #bit    INLVLD1 = INLVLD.1 
+.................... #bit    INLVLD2 = INLVLD.2 
+.................... #bit    INLVLD3 = INLVLD.3 
+.................... #bit    INLVLD4 = INLVLD.4 
+.................... #bit    INLVLD5 = INLVLD.5 
+.................... #bit    INLVLD6 = INLVLD.6 
+.................... #bit    INLVLD7 = INLVLD.7 
+.................... #byte INLVLE = 0x390 
+.................... #byte STATUS_SHAD = 0xFE4 
+.................... #bit    C_SHAD = STATUS_SHAD.0 
+.................... #bit    DC_SHAD = STATUS_SHAD.1 
+.................... #bit    Z_SHAD = STATUS_SHAD.2 
+.................... #byte WREG_SHAD = 0xFE5 
+.................... #byte PCLATH_SHAD = 0xFE7 
+.................... #byte FSR0L_SHAD = 0xFE8 
+.................... #byte FSR0H_SHAD = 0xFE9 
+.................... #byte FSR1L_SHAD = 0xFEA 
+.................... #byte FSR1H_SHAD = 0xFEB 
+.................... #byte STKPTR = 0xFED 
+.................... #byte TOSL = 0xFEE 
+.................... #byte TOSH = 0xFEF 
+....................  
+.................... #include <define_func.c> 
+.................... ////////////////////////////BIRDS-4 ADC Address Definitions////////////////////////// 
+.................... //!#define pY_vol 0xA330 
+.................... //!#define pX_vol 0xA730 
+.................... //!#define mZ_vol 0xAB30 
+.................... //!#define mX_vol 0xAF30 
+.................... //!//#define mX_vol 0xB330 
+.................... //!#define pZ_vol 0xB730 
+.................... //! 
+.................... //!#define pY_temp 0x8330 
+.................... //!#define pX_temp 0x8730 
+.................... //!#define mZ_temp 0x8B30 
+.................... //!#define mX_temp 0x8F30 
+.................... //!//#define mY_temp 0x9330 
+.................... //!#define BPB_temp 0x9730 
+.................... //!//#define pZ_temp1 0x9B30 
+.................... //!#define pZ_temp2 0x9F30 
+.................... //!////////////////////////////BIRDS-5 ADC Address Definitions////////////////////////// 
+.................... //! 
+.................... //!#define mX_vol 0xA330 
+.................... //!#define pY_vol 0xA730 
+.................... //!#define mZ_vol 0xAB30 
+.................... //!#define mY_vol 0xAF30 
+.................... //!#define pZ_vol 0xB730 
+.................... //! 
+.................... //!#define mX_temp 0x8330 
+.................... //!#define pY_temp 0x8730 vin1 
+.................... //!#define mZ_temp 0x8B30 vin2 
+.................... //!#define mY_temp 0x8F30 
+.................... //!#define pZ_temp2 0x9F30 
+.................... //!#define pX_temp 0x9330 
+....................  
+....................  
+.................... ////////////////////////////BIRDS-5 ADC Control Register Definitions////////////////////////// 
+.................... #define mY_temp 0x8730                                                           //Vin1 on ADC connected to FAB PIC 
+.................... #define mZ_temp 0x8B30                                                           //Vin2 
+.................... #define pY_temp 0x8F30                                                           //Vin3 
+.................... #define mX_temp 0x9330                                                           //Vin4 
+.................... #define pX_temp 0x9730                                                           //Vin5 (on FAB schematic, it is connected to vin0, but error on BPB routing has reconnected it to vin5 
+.................... #define pZ_temp1 0x9B30                                                          //Vin6 (vin7, would also work, both are connected to pZ) 
+.................... #define pZ_temp2 0x9F30                                                          //Vin7 (vin6, would also work, both are connected to pZ) 
+....................  
+.................... #define mY_vol 0xA730                                                            //Vin9 
+.................... #define mZ_vol 0xAB30                                                            //Vin10 
+.................... #define pY_vol 0xAF30                                                            //Vin11 
+.................... #define mX_vol 0xB330                                                            //Vin12 
+.................... #define pZ_vol 0xB730                                                            //Vin13 
+....................  
+.................... #define memory 10 
+.................... #define check_memory 5 
+....................  
+.................... int8 kill_flag = 0; 
+.................... int8 check = 0; 
+....................  
+.................... unsigned int16 temp_mY; 
+.................... unsigned int16 temp_mZ; 
+.................... unsigned int16 temp_pY; 
+.................... unsigned int16 temp_mX; 
+.................... unsigned int16 temp_pX; 
+.................... unsigned int16 temp_pZ1; 
+.................... unsigned int16 temp_pZ2; 
+.................... //unsigned int16 temp_BPB; 
+....................  
+.................... unsigned int16 vol_mY; 
+.................... unsigned int16 vol_mZ; 
+.................... unsigned int16 vol_pY; 
+.................... unsigned int16 vol_mX; 
+.................... unsigned int16 vol_pZ; 
+.................... //unsigned int16 vol_pX; 
+....................  
+....................  
+.................... void kill_fab_forward(void) 
+.................... { 
+....................     
+....................    TRISD4 = 0; LATD4 = 1;                                                        // kill FAB EN high 
+*
+0038:  MOVLB  01
+0039:  BCF    0F.4
+003A:  MOVLB  02
+003B:  BSF    0F.4
+....................    TRISD5 = 0; LATD5 = 1;                                                        // kill FAB 1 high 
+003C:  MOVLB  01
+003D:  BCF    0F.5
+003E:  MOVLB  02
+003F:  BSF    0F.5
+....................    TRISD6 = 0; LATD6 = 0;                                                        // kill FAB 2 low 
+0040:  MOVLB  01
+0041:  BCF    0F.6
+0042:  MOVLB  02
+0043:  BCF    0F.6
+....................    TRISD3 = 0; RD3 = 0;                                                          //kill FAB STAT OFF 
+0044:  MOVLB  01
+0045:  BCF    0F.3
+0046:  MOVLB  00
+0047:  BCF    0F.3
+0048:  RETURN
+....................  
+.................... } 
+....................  
+.................... void kill_fab_reverse(void) 
+.................... { 
+....................    TRISD4 = 0; LATD4 = 1;                                                        // kill FAB EN high 
+*
+0056:  MOVLB  01
+0057:  BCF    0F.4
+0058:  MOVLB  02
+0059:  BSF    0F.4
+....................    TRISD5 = 0; LATD5 = 0;                                                        // kill FAB 1 low 
+005A:  MOVLB  01
+005B:  BCF    0F.5
+005C:  MOVLB  02
+005D:  BCF    0F.5
+....................    TRISD6 = 0; LATD6 = 1;                                                        // kill FAB 2 high 
+005E:  MOVLB  01
+005F:  BCF    0F.6
+0060:  MOVLB  02
+0061:  BSF    0F.6
+....................    TRISD3 = 0; RD3 = 1;                                                          //kill FAB STAT ON 
+0062:  MOVLB  01
+0063:  BCF    0F.3
+0064:  MOVLB  00
+0065:  BSF    0F.3
+0066:  RETURN
+....................  
+.................... } 
+....................  
+.................... void kill_OBC_forward(void) 
+.................... { 
+....................     
+....................    TRISD2 = 0; LATD2 = 1;                                                        // kill OBC FAB 1 high 
+*
+0049:  MOVLB  01
+004A:  BCF    0F.2
+004B:  MOVLB  02
+004C:  BSF    0F.2
+....................    TRISD1 = 0; LATD1 = 0;                                                        // kill OBC FAB 2 low 
+004D:  MOVLB  01
+004E:  BCF    0F.1
+004F:  MOVLB  02
+0050:  BCF    0F.1
+....................    TRISC1 = 0; RC1 = 0;                                                          //OBC kill FAB STAT OFF 
+0051:  MOVLB  01
+0052:  BCF    0E.1
+0053:  MOVLB  00
+0054:  BCF    0E.1
+0055:  RETURN
+....................  
+.................... } 
+....................  
+.................... void kill_OBC_reverse(void) 
+.................... { 
+....................     
+....................    TRISD2 = 0; LATD2 = 0;                                                        // kill OBC FAB 1 low 
+*
+0067:  MOVLB  01
+0068:  BCF    0F.2
+0069:  MOVLB  02
+006A:  BCF    0F.2
+....................    TRISD1 = 0; LATD1 = 1;                                                        // kill OBC FAB 2 high 
+006B:  MOVLB  01
+006C:  BCF    0F.1
+006D:  MOVLB  02
+006E:  BSF    0F.1
+....................    TRISC1 = 0; RC1 = 1;                                                          //OBC kill FAB STAT ON 
+006F:  MOVLB  01
+0070:  BCF    0E.1
+0071:  MOVLB  00
+0072:  BSF    0E.1
+0073:  RETURN
+....................  
+.................... } 
+....................  
+....................  
+....................  
+.................... /*#fuses WDT, NOMCLR*/ 
+....................  
+....................  
+.................... //#use rs232(baud=9600,uart1,parity=N,xmit=PIN_B6,rcv=PIN_B7,bits=8,stream=PC) 
+....................  
+.................... #use rs232(UART1,baud=9600,parity=N,bits=8,stream=MPIC,ERRORS) 
+*
+0021:  BTFSS  11.5
+0022:  GOTO   021
+0023:  MOVLB  03
+0024:  MOVF   1D,W
+0025:  MOVLB  00
+0026:  MOVWF  3E
+0027:  MOVLB  03
+0028:  MOVF   19,W
+0029:  MOVWF  78
+002A:  MOVLB  00
+002B:  BTFSS  3E.1
+002C:  GOTO   031
+002D:  MOVLB  03
+002E:  BCF    1D.4
+002F:  BSF    1D.4
+0030:  MOVLB  00
+*
+0431:  BTFSS  11.4
+0432:  GOTO   431
+0433:  MOVLB  03
+0434:  MOVWF  1A
+0435:  MOVLP  00
+0436:  MOVLB  00
+0437:  GOTO   50D (RETURN)
+....................  
+.................... #use spi(MASTER, CLK = PIN_C3, DI = PIN_C4, DO = PIN_C5,ENABLE = PIN_C2, BAUD = 9600, BITS = 16, STREAM = PORT2, MODE = 2 ) 
+*
+008B:  MOVLB  01
+008C:  MOVF   3E,W
+008D:  SUBLW  10
+008E:  BTFSC  03.2
+008F:  GOTO   095
+0090:  MOVWF  40
+0091:  RLF    3C,F
+0092:  RLF    3D,F
+0093:  DECFSZ 40,F
+0094:  GOTO   091
+0095:  BSF    0E.4
+0096:  BCF    0E.5
+0097:  BCF    0E.3
+0098:  MOVLB  02
+0099:  BSF    0E.3
+009A:  MOVLB  01
+009B:  BCF    0E.2
+009C:  MOVLB  02
+009D:  BCF    0E.2
+009E:  MOVLB  01
+009F:  MOVF   3E,W
+00A0:  MOVWF  40
+00A1:  BTFSC  3D.7
+00A2:  GOTO   0A6
+00A3:  MOVLB  02
+00A4:  BCF    0E.5
+00A5:  MOVLB  01
+00A6:  BTFSS  3D.7
+00A7:  GOTO   0AB
+00A8:  MOVLB  02
+00A9:  BSF    0E.5
+00AA:  MOVLB  01
+00AB:  RLF    3C,F
+00AC:  RLF    3D,F
+00AD:  MOVLB  02
+00AE:  BCF    0E.3
+00AF:  MOVLW  44
+00B0:  MOVLB  01
+00B1:  MOVWF  41
+00B2:  DECFSZ 41,F
+00B3:  GOTO   0B2
+00B4:  RLF    78,F
+00B5:  RLF    79,F
+00B6:  MOVLB  00
+00B7:  BTFSS  0E.4
+00B8:  BCF    78.0
+00B9:  BTFSC  0E.4
+00BA:  BSF    78.0
+00BB:  MOVLB  02
+00BC:  BSF    0E.3
+00BD:  MOVLW  43
+00BE:  MOVLB  01
+00BF:  MOVWF  41
+00C0:  DECFSZ 41,F
+00C1:  GOTO   0C0
+00C2:  DECFSZ 40,F
+00C3:  GOTO   0A1
+00C4:  MOVLB  02
+00C5:  BSF    0E.2
+00C6:  MOVLB  00
+00C7:  RETURN
+....................  
+.................... int8 fabData[45] = {0};                                                          //FAB data array 
+.................... //int8 adcsData[26] = {0};                                                         //Array for adcs data 
+.................... unsigned int16 SRC_current = 0; 
+.................... unsigned int16 bat_current = 0; 
+.................... unsigned int16 RAW_current = 0; 
+.................... unsigned int16 Ipz_current = 0; 
+.................... unsigned int16 Imy_current = 0; 
+.................... unsigned int16 Imz_current = 0; 
+.................... unsigned int16 Ipy_current = 0; 
+.................... unsigned int16 Imx_current = 0; 
+.................... int8 heaterManual = 0; 
+.................... #include <ADC_reading_func.c> 
+....................  
+.................... //________________________READ VOLTAGE CHANNELS OF ADC_______________________________________________________________________________________// 
+....................  
+.................... unsigned int16 READ_vol_CHANNEL(int16 Address)                                   //read the voltage value of the memory position received 
+.................... { 
+....................    
+....................     RC2 = 0; 
+*
+016B:  BCF    0E.2
+....................      
+....................     spi_xfer(PORT2, Address); 
+016C:  MOVLB  01
+016D:  MOVF   37,W
+016E:  MOVWF  3D
+016F:  MOVF   36,W
+0170:  MOVWF  3C
+0171:  MOVLW  10
+0172:  MOVWF  3E
+0173:  MOVLB  00
+0174:  CALL   08B
+....................                  
+....................     unsigned int16 vol_X = spi_xfer(PORT2); 
+....................           
+....................     unsigned int16 adc_res16 = vol_X & 0x0FFF;                                   //removing the address bits 
+0175:  MOVLB  01
+0176:  CLRF   3D
+0177:  MOVLW  01
+0178:  MOVWF  3C
+0179:  MOVLW  10
+017A:  MOVWF  3E
+017B:  MOVLB  00
+017C:  CALL   08B
+017D:  MOVF   79,W
+017E:  MOVLB  01
+017F:  MOVWF  39
+0180:  MOVF   78,W
+0181:  MOVWF  38
+0182:  MOVWF  3A
+0183:  MOVF   39,W
+0184:  ANDLW  0F
+0185:  MOVWF  3B
+....................                                  
+....................     RC2 = 1; 
+0186:  MOVLB  00
+0187:  BSF    0E.2
+....................        
+....................     delay_us(20); 
+0188:  MOVLW  1A
+0189:  MOVWF  77
+018A:  DECFSZ 77,F
+018B:  GOTO   18A
+018C:  NOP
+....................      
+....................     return adc_res16; 
+018D:  MOVLB  01
+018E:  MOVF   3A,W
+018F:  MOVWF  78
+0190:  MOVF   3B,W
+0191:  MOVWF  79
+0192:  MOVLB  00
+0193:  RETURN
+.................... } 
+....................  
+.................... //________________________READ TEMPERATURE CHANNEL OF ADC_________________________________________________________________________________________________________// 
+....................  
+....................  
+.................... int16 READ_temp_CHANNEL(int16 Address)                                           //read the temp value from the memory location received 
+.................... { 
+....................    
+....................    RC2 = 0; 
+*
+00C8:  BCF    0E.2
+....................                  
+....................    spi_xfer(PORT2, Address); 
+00C9:  MOVLB  01
+00CA:  MOVF   36,W
+00CB:  MOVWF  3D
+00CC:  MOVF   35,W
+00CD:  MOVWF  3C
+00CE:  MOVLW  10
+00CF:  MOVWF  3E
+00D0:  MOVLB  00
+00D1:  CALL   08B
+....................     
+....................    unsigned int16 temp_X = spi_xfer(PORT2); 
+....................     
+....................    unsigned int16 adc_temp16 = temp_X & 0x0FFF;                                  //leave the 12-bit data 
+00D2:  MOVLB  01
+00D3:  CLRF   3D
+00D4:  MOVLW  01
+00D5:  MOVWF  3C
+00D6:  MOVLW  10
+00D7:  MOVWF  3E
+00D8:  MOVLB  00
+00D9:  CALL   08B
+00DA:  MOVF   79,W
+00DB:  MOVLB  01
+00DC:  MOVWF  38
+00DD:  MOVF   78,W
+00DE:  MOVWF  37
+00DF:  MOVWF  39
+00E0:  MOVF   38,W
+00E1:  ANDLW  0F
+00E2:  MOVWF  3A
+....................           
+....................    RC2 = 1; 
+00E3:  MOVLB  00
+00E4:  BSF    0E.2
+....................     
+....................    delay_us(20); 
+00E5:  MOVLW  1A
+00E6:  MOVWF  77
+00E7:  DECFSZ 77,F
+00E8:  GOTO   0E7
+00E9:  NOP
+....................     
+....................    return adc_temp16; 
+00EA:  MOVLB  01
+00EB:  MOVF   39,W
+00EC:  MOVWF  78
+00ED:  MOVF   3A,W
+00EE:  MOVWF  79
+00EF:  MOVLB  00
+00F0:  RETURN
+.................... } 
+.................... //________________________CALIBRATE TEMPERATURE CHANNEL OF ADC_________________________________________________________________________________________________________// 
+....................  
+.................... void temperature(void)                                                           //reads the temperature values and saves them in the array fabDATA [] 
+.................... { 
+....................  
+.................... //        fprintf(PC,"\n\rTemperature measurement\r\n"); 
+....................           temp_pY = READ_temp_CHANNEL(pY_temp);                                  //pass the address to the function to read temp_pY from the ADC +Y          
+00F1:  MOVLW  8F
+00F2:  MOVLB  01
+00F3:  MOVWF  36
+00F4:  MOVLW  30
+00F5:  MOVWF  35
+00F6:  MOVLB  00
+00F7:  CALL   0C8
+00F8:  MOVF   79,W
+00F9:  MOVWF  2B
+00FA:  MOVF   78,W
+00FB:  MOVWF  2A
+....................           fabData[1] = (temp_pY >> 8) & 0xFF; 
+00FC:  MOVF   2B,W
+00FD:  MOVLB  01
+00FE:  MOVWF  36
+00FF:  CLRF   37
+0100:  MOVF   36,W
+0101:  MOVLB  00
+0102:  MOVWF  40
+....................           fabData[2] = temp_pY & 0x00FF;                                       
+0103:  MOVF   2A,W
+0104:  MOVWF  41
+....................      
+....................     //-------------------------------------------------------// 
+....................           temp_pX = READ_temp_CHANNEL(pX_temp);                                  //pass the address to the function to read temp_pX from the ADC +X 
+0105:  MOVLW  97
+0106:  MOVLB  01
+0107:  MOVWF  36
+0108:  MOVLW  30
+0109:  MOVWF  35
+010A:  MOVLB  00
+010B:  CALL   0C8
+010C:  MOVF   79,W
+010D:  MOVWF  2F
+010E:  MOVF   78,W
+010F:  MOVWF  2E
+....................           fabData[3] = (temp_pX >> 8) & 0xFF; 
+0110:  MOVF   2F,W
+0111:  MOVLB  01
+0112:  MOVWF  36
+0113:  CLRF   37
+0114:  MOVF   36,W
+0115:  MOVLB  00
+0116:  MOVWF  42
+....................           fabData[4] = temp_pX & 0x00FF;        
+0117:  MOVF   2E,W
+0118:  MOVWF  43
+....................       
+....................      //-------------------------------------------------------// 
+....................           temp_mZ = READ_temp_CHANNEL(mZ_temp);                                  //pass the address to the function to read temp_mZ from the ADC -Z           
+0119:  MOVLW  8B
+011A:  MOVLB  01
+011B:  MOVWF  36
+011C:  MOVLW  30
+011D:  MOVWF  35
+011E:  MOVLB  00
+011F:  CALL   0C8
+0120:  MOVF   79,W
+0121:  MOVWF  29
+0122:  MOVF   78,W
+0123:  MOVWF  28
+....................           fabData[5] = (temp_mZ >> 8) & 0xFF; 
+0124:  MOVF   29,W
+0125:  MOVLB  01
+0126:  MOVWF  36
+0127:  CLRF   37
+0128:  MOVF   36,W
+0129:  MOVLB  00
+012A:  MOVWF  44
+....................           fabData[6] = temp_mZ & 0x00FF;        
+012B:  MOVF   28,W
+012C:  MOVWF  45
+....................     
+....................     //-------------------------------------------------------// 
+....................           temp_mX = READ_temp_CHANNEL(mX_temp);                                  //pass the address to the function to read temp_mX from the ADC -X           
+012D:  MOVLW  93
+012E:  MOVLB  01
+012F:  MOVWF  36
+0130:  MOVLW  30
+0131:  MOVWF  35
+0132:  MOVLB  00
+0133:  CALL   0C8
+0134:  MOVF   79,W
+0135:  MOVWF  2D
+0136:  MOVF   78,W
+0137:  MOVWF  2C
+....................           fabData[7] = (temp_mX >> 8) & 0xFF; 
+0138:  MOVF   2D,W
+0139:  MOVLB  01
+013A:  MOVWF  36
+013B:  CLRF   37
+013C:  MOVF   36,W
+013D:  MOVLB  00
+013E:  MOVWF  46
+....................           fabData[8] = temp_mX & 0x00FF;        
+013F:  MOVF   2C,W
+0140:  MOVWF  47
+....................  
+....................     //-------------------------------------------------------//                  //pass the address to the function to read temp_mY from the ADC -Y            
+....................           temp_mY = READ_temp_CHANNEL(mY_temp);          
+0141:  MOVLW  87
+0142:  MOVLB  01
+0143:  MOVWF  36
+0144:  MOVLW  30
+0145:  MOVWF  35
+0146:  MOVLB  00
+0147:  CALL   0C8
+0148:  MOVF   79,W
+0149:  MOVWF  27
+014A:  MOVF   78,W
+014B:  MOVWF  26
+....................           fabData[9] = (temp_mY >> 8) & 0xFF; 
+014C:  MOVF   27,W
+014D:  MOVLB  01
+014E:  MOVWF  36
+014F:  CLRF   37
+0150:  MOVF   36,W
+0151:  MOVLB  00
+0152:  MOVWF  48
+....................           fabData[10] = temp_mY & 0x00FF;        
+0153:  MOVF   26,W
+0154:  MOVWF  49
+....................      
+....................     //-------------------------------------------------------// 
+.................... //!          temp_BPB = READ_temp_CHANNEL(BPB_temp);                                //pass the address to the function to read temp_BPB from the ADC 
+.................... //!           
+.................... //!          fabData[9] = (temp_BPB >> 8) & 0xFF; 
+.................... //!          fabData[10] = temp_BPB & 0x00FF;        
+....................     //-------------------------------------------------------//          
+.................... //!          temp_pZ1 = READ_temp_CHANNEL(pZ_temp1); 
+.................... //!           
+.................... //!          fabData[13] = (temp_pZ1 >> 8) & 0xFF; 
+.................... //!          fabData[14] = temp_pZ1 & 0x00FF;        
+....................  
+....................     //-------------------------------------------------------//   
+....................      
+....................           temp_pZ2 = READ_temp_CHANNEL(pZ_temp2);                                //pass the address to the function to read temp_pZ2 from the ADC +Z           
+0155:  MOVLW  9F
+0156:  MOVLB  01
+0157:  MOVWF  36
+0158:  MOVLW  30
+0159:  MOVWF  35
+015A:  MOVLB  00
+015B:  CALL   0C8
+015C:  MOVF   79,W
+015D:  MOVWF  33
+015E:  MOVF   78,W
+015F:  MOVWF  32
+....................           fabData[11] = (temp_pZ2 >> 8) & 0xFF; 
+0160:  MOVF   33,W
+0161:  MOVLB  01
+0162:  MOVWF  36
+0163:  CLRF   37
+0164:  MOVF   36,W
+0165:  MOVLB  00
+0166:  MOVWF  4A
+....................           fabData[12] = temp_pZ2 & 0x00FF;   
+0167:  MOVF   32,W
+0168:  MOVWF  4B
+....................            
+....................           return; 
+0169:  MOVLP  00
+016A:  GOTO   4F1 (RETURN)
+.................... } 
+....................  
+.................... //________________________CALIBRATE VOLTAGE CHANNEL OF ADC_________________________________________________________________________________________________________// 
+....................  
+.................... void voltages(void)                                                              //reads the voltage values and saves them in the array fabDATA [] 
+.................... {                                                             
+.................... //        fprintf(PC,"\n\rVoltage measurement\r\n"); 
+....................           vol_pY = READ_vol_CHANNEL(pY_vol);                                     //pass the address to the function to read vol_pY from the ADC  +Y                                            
+*
+0194:  MOVLW  AF
+0195:  MOVLB  01
+0196:  MOVWF  37
+0197:  MOVLW  30
+0198:  MOVWF  36
+0199:  MOVLB  00
+019A:  CALL   16B
+019B:  MOVF   79,W
+019C:  MOVWF  39
+019D:  MOVF   78,W
+019E:  MOVWF  38
+....................           fabData[13] = (vol_pY >> 8) & 0xFF; 
+019F:  MOVF   39,W
+01A0:  MOVLB  01
+01A1:  MOVWF  36
+01A2:  CLRF   37
+01A3:  MOVF   36,W
+01A4:  MOVLB  00
+01A5:  MOVWF  4C
+....................           fabData[14] = vol_pY & 0x00FF;                              
+01A6:  MOVF   38,W
+01A7:  MOVWF  4D
+....................      
+....................     //-------------------------------------------------------// 
+.................... //!          vol_pX = READ_vol_CHANNEL(pX_vol);                                     //pass the address to the function to read vol_pX from the ADC +X 
+.................... //!           
+.................... //!          fabData[15] = (vol_pX >> 8) & 0xFF; 
+.................... //!          fabData[16] = vol_pX & 0x00FF;        
+....................      //-------------------------------------------------------// 
+....................       
+....................     //-------------------------------------------------------//       
+....................           vol_mY = READ_vol_CHANNEL(mY_vol);          
+01A8:  MOVLW  A7
+01A9:  MOVLB  01
+01AA:  MOVWF  37
+01AB:  MOVLW  30
+01AC:  MOVWF  36
+01AD:  MOVLB  00
+01AE:  CALL   16B
+01AF:  MOVF   79,W
+01B0:  MOVWF  35
+01B1:  MOVF   78,W
+01B2:  MOVWF  34
+....................           fabData[15] = (vol_mY >> 8) & 0xFF; 
+01B3:  MOVF   35,W
+01B4:  MOVLB  01
+01B5:  MOVWF  36
+01B6:  CLRF   37
+01B7:  MOVF   36,W
+01B8:  MOVLB  00
+01B9:  MOVWF  4E
+....................           fabData[16] = vol_mY & 0x00FF;        
+01BA:  MOVF   34,W
+01BB:  MOVWF  4F
+....................  
+....................     //-------------------------------------------------------//   
+....................      
+....................           vol_mZ = READ_vol_CHANNEL(mZ_vol);                                     //pass the address to the function to read vol_mZ from the ADC -Z          
+01BC:  MOVLW  AB
+01BD:  MOVLB  01
+01BE:  MOVWF  37
+01BF:  MOVLW  30
+01C0:  MOVWF  36
+01C1:  MOVLB  00
+01C2:  CALL   16B
+01C3:  MOVF   79,W
+01C4:  MOVWF  37
+01C5:  MOVF   78,W
+01C6:  MOVWF  36
+....................           fabData[17] = (vol_mZ >> 8) & 0xFF; 
+01C7:  MOVF   37,W
+01C8:  MOVLB  01
+01C9:  MOVWF  36
+01CA:  CLRF   37
+01CB:  MOVF   36,W
+01CC:  MOVLB  00
+01CD:  MOVWF  50
+....................           fabData[18] = vol_mZ & 0x00FF;        
+01CE:  MOVF   36,W
+01CF:  MOVWF  51
+....................            
+....................     //-------------------------------------------------------//      
+....................           vol_mX = READ_vol_CHANNEL(mX_vol);                                     //pass the address to the function to read vol_mX from the ADC -X           
+01D0:  MOVLW  B3
+01D1:  MOVLB  01
+01D2:  MOVWF  37
+01D3:  MOVLW  30
+01D4:  MOVWF  36
+01D5:  MOVLB  00
+01D6:  CALL   16B
+01D7:  MOVF   79,W
+01D8:  MOVWF  3B
+01D9:  MOVF   78,W
+01DA:  MOVWF  3A
+....................           fabData[19] = (vol_mX >> 8) & 0xFF; 
+01DB:  MOVF   3B,W
+01DC:  MOVLB  01
+01DD:  MOVWF  36
+01DE:  CLRF   37
+01DF:  MOVF   36,W
+01E0:  MOVLB  00
+01E1:  MOVWF  52
+....................           fabData[20] = vol_mX & 0x00FF;        
+01E2:  MOVF   3A,W
+01E3:  MOVWF  53
+....................                      
+....................     //-------------------------------------------------------//       
+.................... //!          vol_mY = READ_vol_CHANNEL(mY_vol); 
+.................... //!           
+.................... //!          fabData[25] = (vol_mY >> 8) & 0xFF; 
+.................... //!          fabData[26] = vol_mY & 0x00FF;        
+.................... //! 
+....................     //-------------------------------------------------------//          
+....................           vol_pZ = READ_vol_CHANNEL(pZ_vol);                                     //pass the address to the function to read vol_pZ from the ADC +Z           
+01E4:  MOVLW  B7
+01E5:  MOVLB  01
+01E6:  MOVWF  37
+01E7:  MOVLW  30
+01E8:  MOVWF  36
+01E9:  MOVLB  00
+01EA:  CALL   16B
+01EB:  MOVF   79,W
+01EC:  MOVWF  3D
+01ED:  MOVF   78,W
+01EE:  MOVWF  3C
+....................           fabData[21] = (vol_pZ >> 8) & 0xFF; 
+01EF:  MOVF   3D,W
+01F0:  MOVLB  01
+01F1:  MOVWF  36
+01F2:  CLRF   37
+01F3:  MOVF   36,W
+01F4:  MOVLB  00
+01F5:  MOVWF  54
+....................           fabData[22] = vol_pZ & 0x00FF;      
+01F6:  MOVF   3C,W
+01F7:  MOVWF  55
+....................            
+....................           return; 
+01F8:  MOVLP  00
+01F9:  GOTO   4F2 (RETURN)
+.................... } 
+....................  
+.................... //________________________READ ADC CHANNEL OF FAB CURRENT_________________________________________________________________________________________________________// 
+....................  
+.................... int8 READ_PIC_ADC(int8 port_name) 
+.................... { 
+....................     
+....................    SET_ADC_CHANNEL(port_name);                                                   //  routing nth channel to adc 
+*
+0340:  MOVLB  01
+0341:  RLF    35,W
+0342:  MOVWF  77
+0343:  RLF    77,F
+0344:  MOVLW  FC
+0345:  ANDWF  77,F
+0346:  MOVF   1D,W
+0347:  ANDLW  83
+0348:  IORWF  77,W
+0349:  MOVWF  1D
+034A:  MOVLW  0F
+034B:  MOVWF  78
+034C:  MOVF   1F,W
+034D:  ANDLW  F0
+034E:  IORWF  78,W
+034F:  MOVWF  1F
+....................    unsigned int16 ADC_VALUE; 
+....................    delay_us(20); 
+0350:  MOVLW  1A
+0351:  MOVWF  77
+0352:  DECFSZ 77,F
+0353:  GOTO   352
+0354:  NOP
+....................    ADC_VALUE = READ_ADC();    
+0355:  BSF    1D.1
+0356:  BTFSC  1D.1
+0357:  GOTO   356
+0358:  MOVF   1B,W
+0359:  MOVWF  36
+035A:  MOVF   1C,W
+035B:  MOVWF  37
+....................     
+....................    int8 bit8value = ADC_VALUE/16;                                                //TODO: decide if we should bit shift to the right 4 times or if we should mask the lower 8 bits 
+035C:  RRF    37,W
+035D:  MOVWF  7A
+035E:  RRF    36,W
+035F:  MOVWF  79
+0360:  RRF    7A,F
+0361:  RRF    79,F
+0362:  RRF    7A,F
+0363:  RRF    79,F
+0364:  RRF    7A,F
+0365:  RRF    79,F
+0366:  MOVF   79,W
+0367:  MOVWF  38
+....................    //int8 bit8value =  ADC_VALUE & 0x0FF; 
+....................    //unsigned int8 bit8value = (int8) ADC_VALUE;                                              //Change to first method (first comment) if this doesn't work well 
+....................    return bit8value; 
+0368:  MOVF   38,W
+0369:  MOVWF  78
+036A:  MOVLB  00
+036B:  RETURN
+.................... } 
+....................  
+.................... //======================16bit value reading ADC==============================// 
+....................  
+.................... int16 READ_PIC_ADC16(int8 port_name) 
+*
+02C5:  CLRF   5F
+02C6:  CLRF   5E
+.................... { 
+....................  
+....................    unsigned int16 ADC_VALUE16[100] = {0}; 
+*
+01FA:  MOVLB  01
+01FB:  CLRF   36
+01FC:  CLRF   37
+01FD:  CLRF   38
+01FE:  CLRF   39
+01FF:  CLRF   3A
+0200:  CLRF   3B
+0201:  CLRF   3C
+0202:  CLRF   3D
+0203:  CLRF   3E
+0204:  CLRF   3F
+0205:  CLRF   40
+0206:  CLRF   41
+0207:  CLRF   42
+0208:  CLRF   43
+0209:  CLRF   44
+020A:  CLRF   45
+020B:  CLRF   46
+020C:  CLRF   47
+020D:  CLRF   48
+020E:  CLRF   49
+020F:  CLRF   4A
+0210:  CLRF   4B
+0211:  CLRF   4C
+0212:  CLRF   4D
+0213:  CLRF   4E
+0214:  CLRF   4F
+0215:  CLRF   50
+0216:  CLRF   51
+0217:  CLRF   52
+0218:  CLRF   53
+0219:  CLRF   54
+021A:  CLRF   55
+021B:  CLRF   56
+021C:  CLRF   57
+021D:  CLRF   58
+021E:  CLRF   59
+021F:  CLRF   5A
+0220:  CLRF   5B
+0221:  CLRF   5C
+0222:  CLRF   5D
+0223:  CLRF   5E
+0224:  CLRF   5F
+0225:  CLRF   60
+0226:  CLRF   61
+0227:  CLRF   62
+0228:  CLRF   63
+0229:  CLRF   64
+022A:  CLRF   65
+022B:  CLRF   66
+022C:  CLRF   67
+022D:  CLRF   68
+022E:  CLRF   69
+022F:  CLRF   6A
+0230:  CLRF   6B
+0231:  CLRF   6C
+0232:  CLRF   6D
+0233:  CLRF   6E
+0234:  CLRF   6F
+0235:  MOVLB  02
+0236:  CLRF   20
+0237:  CLRF   21
+0238:  CLRF   22
+0239:  CLRF   23
+023A:  CLRF   24
+023B:  CLRF   25
+023C:  CLRF   26
+023D:  CLRF   27
+023E:  CLRF   28
+023F:  CLRF   29
+0240:  CLRF   2A
+0241:  CLRF   2B
+0242:  CLRF   2C
+0243:  CLRF   2D
+0244:  CLRF   2E
+0245:  CLRF   2F
+0246:  CLRF   30
+0247:  CLRF   31
+0248:  CLRF   32
+0249:  CLRF   33
+024A:  CLRF   34
+024B:  CLRF   35
+024C:  CLRF   36
+024D:  CLRF   37
+024E:  CLRF   38
+024F:  CLRF   39
+0250:  CLRF   3A
+0251:  CLRF   3B
+0252:  CLRF   3C
+0253:  CLRF   3D
+0254:  CLRF   3E
+0255:  CLRF   3F
+0256:  CLRF   40
+0257:  CLRF   41
+0258:  CLRF   42
+0259:  CLRF   43
+025A:  CLRF   44
+025B:  CLRF   45
+025C:  CLRF   46
+025D:  CLRF   47
+025E:  CLRF   48
+025F:  CLRF   49
+0260:  CLRF   4A
+0261:  CLRF   4B
+0262:  CLRF   4C
+0263:  CLRF   4D
+0264:  CLRF   4E
+0265:  CLRF   4F
+0266:  CLRF   50
+0267:  CLRF   51
+0268:  CLRF   52
+0269:  CLRF   53
+026A:  CLRF   54
+026B:  CLRF   55
+026C:  CLRF   56
+026D:  CLRF   57
+026E:  CLRF   58
+026F:  CLRF   59
+0270:  CLRF   5A
+0271:  CLRF   5B
+0272:  CLRF   5C
+0273:  CLRF   5D
+0274:  CLRF   5E
+0275:  CLRF   5F
+0276:  CLRF   60
+0277:  CLRF   61
+0278:  CLRF   62
+0279:  CLRF   63
+027A:  CLRF   64
+027B:  CLRF   65
+027C:  CLRF   66
+027D:  CLRF   67
+027E:  CLRF   68
+027F:  CLRF   69
+0280:  CLRF   6A
+0281:  CLRF   6B
+0282:  CLRF   6C
+0283:  CLRF   6D
+0284:  CLRF   6E
+0285:  CLRF   6F
+0286:  MOVLB  03
+0287:  CLRF   20
+0288:  CLRF   21
+0289:  CLRF   22
+028A:  CLRF   23
+028B:  CLRF   24
+028C:  CLRF   25
+028D:  CLRF   26
+028E:  CLRF   27
+028F:  CLRF   28
+0290:  CLRF   29
+0291:  CLRF   2A
+0292:  CLRF   2B
+0293:  CLRF   2C
+0294:  CLRF   2D
+0295:  CLRF   2E
+0296:  CLRF   2F
+0297:  CLRF   30
+0298:  CLRF   31
+0299:  CLRF   32
+029A:  CLRF   33
+029B:  CLRF   34
+029C:  CLRF   35
+029D:  CLRF   36
+029E:  CLRF   37
+029F:  CLRF   38
+02A0:  CLRF   39
+02A1:  CLRF   3A
+02A2:  CLRF   3B
+02A3:  CLRF   3C
+02A4:  CLRF   3D
+02A5:  CLRF   3E
+02A6:  CLRF   3F
+02A7:  CLRF   40
+02A8:  CLRF   41
+02A9:  CLRF   42
+02AA:  CLRF   43
+02AB:  CLRF   44
+02AC:  CLRF   45
+02AD:  CLRF   46
+02AE:  CLRF   47
+02AF:  CLRF   48
+02B0:  CLRF   49
+02B1:  CLRF   4A
+02B2:  CLRF   4B
+02B3:  CLRF   4C
+02B4:  CLRF   4D
+02B5:  CLRF   4E
+02B6:  CLRF   4F
+02B7:  CLRF   50
+02B8:  CLRF   51
+02B9:  CLRF   52
+02BA:  CLRF   53
+02BB:  CLRF   54
+02BC:  CLRF   55
+02BD:  CLRF   56
+02BE:  CLRF   57
+02BF:  CLRF   58
+02C0:  CLRF   59
+02C1:  CLRF   5A
+02C2:  CLRF   5B
+02C3:  CLRF   5C
+02C4:  CLRF   5D
+....................    unsigned int16 avg_val = 0; 
+....................    SET_ADC_CHANNEL(port_name);                                                   //  routing nth channel to adc 
+*
+02C7:  MOVLB  01
+02C8:  RLF    35,W
+02C9:  MOVWF  77
+02CA:  RLF    77,F
+02CB:  MOVLW  FC
+02CC:  ANDWF  77,F
+02CD:  MOVF   1D,W
+02CE:  ANDLW  83
+02CF:  IORWF  77,W
+02D0:  MOVWF  1D
+02D1:  MOVLW  0F
+02D2:  MOVWF  78
+02D3:  MOVF   1F,W
+02D4:  ANDLW  F0
+02D5:  IORWF  78,W
+02D6:  MOVWF  1F
+....................    delay_us(20); 
+02D7:  MOVLW  1A
+02D8:  MOVWF  77
+02D9:  DECFSZ 77,F
+02DA:  GOTO   2D9
+02DB:  NOP
+....................    for(int k=0; k<100; k++) 
+02DC:  MOVLB  03
+02DD:  CLRF   60
+02DE:  MOVF   60,W
+02DF:  SUBLW  63
+02E0:  BTFSS  03.0
+02E1:  GOTO   2F9
+....................    { 
+....................       ADC_VALUE16[k] = READ_ADC();  
+02E2:  BCF    03.0
+02E3:  RLF    60,W
+02E4:  ADDLW  66
+02E5:  MOVWF  04
+02E6:  MOVLW  20
+02E7:  MOVWF  05
+02E8:  BTFSC  03.0
+02E9:  INCF   05,F
+02EA:  MOVLB  01
+02EB:  BSF    1D.1
+02EC:  BTFSC  1D.1
+02ED:  GOTO   2EC
+02EE:  MOVF   1B,W
+02EF:  MOVWF  00
+02F0:  MOVF   1C,W
+02F1:  MOVWI  W,[FSR0+01]
+....................       delay_us(10);                                                               //uncomment if FAB data is sent out of order 
+02F2:  MOVLW  0D
+02F3:  MOVWF  77
+02F4:  DECFSZ 77,F
+02F5:  GOTO   2F4
+02F6:  MOVLB  03
+02F7:  INCF   60,F
+02F8:  GOTO   2DE
+....................    } 
+....................    avg_val = (ADC_VALUE16[49] + ADC_VALUE16[50] + ADC_VALUE16[51])/3; 
+02F9:  MOVLB  02
+02FA:  MOVF   4A,W
+02FB:  ADDWF  48,W
+02FC:  MOVLB  03
+02FD:  MOVWF  62
+02FE:  MOVLB  02
+02FF:  MOVF   4B,W
+0300:  ADDWFC 49,W
+0301:  MOVLB  03
+0302:  MOVWF  63
+0303:  MOVLB  02
+0304:  MOVF   4C,W
+0305:  MOVLB  03
+0306:  ADDWF  62,F
+0307:  MOVLB  02
+0308:  MOVF   4D,W
+0309:  MOVLB  03
+030A:  ADDWFC 63,F
+030B:  MOVF   63,W
+030C:  MOVWF  65
+030D:  MOVF   62,W
+030E:  MOVWF  64
+030F:  CLRF   67
+0310:  MOVLW  03
+0311:  MOVWF  66
+*
+0336:  MOVF   79,W
+0337:  MOVWF  5F
+0338:  MOVF   78,W
+0339:  MOVWF  5E
+....................     
+....................    return avg_val;                                                               //return median ADC reading 
+033A:  MOVF   5E,W
+033B:  MOVWF  78
+033C:  MOVF   5F,W
+033D:  MOVWF  79
+033E:  MOVLB  00
+033F:  RETURN
+.................... } 
+....................  
+.................... //________________________CREATE ARRAY OF FAB DATA________________________// 
+....................  
+.................... void adc_FAB(void)                                                               //read the ADC from the PIC 
+.................... { 
+....................    //      fprintf(PC,"ADC_FAB measurement\r\n"); 
+....................     
+....................    Imx_current = READ_PIC_ADC16(4);                                              // I_panel -X connected to analog input 4 (pin RA5(AN4)) on FAB PIC 
+*
+036C:  MOVLW  04
+036D:  MOVLB  01
+036E:  MOVWF  35
+036F:  MOVLB  00
+0370:  CALL   1FA
+0371:  MOVF   79,W
+0372:  MOVLB  01
+0373:  MOVWF  2B
+0374:  MOVF   78,W
+0375:  MOVWF  2A
+....................    fabData[23] = (Imx_current >> 8)& 0xff; 
+0376:  CLRF   37
+0377:  MOVF   2B,W
+0378:  MOVLB  00
+0379:  MOVWF  56
+....................    fabData[24] = Imx_current & 0x00ff; 
+037A:  MOVLB  01
+037B:  MOVF   2A,W
+037C:  MOVLB  00
+037D:  MOVWF  57
+....................    //fabData[23] = READ_PIC_ADC(0);                                               
+....................    
+....................    Ipy_current = READ_PIC_ADC16(3);                                              // I_panel +Y connected to analog input 3 (AN3) on FAB PIC 
+037E:  MOVLW  03
+037F:  MOVLB  01
+0380:  MOVWF  35
+0381:  MOVLB  00
+0382:  CALL   1FA
+0383:  MOVF   79,W
+0384:  MOVLB  01
+0385:  MOVWF  29
+0386:  MOVF   78,W
+0387:  MOVWF  28
+....................    fabData[25] = (Ipy_current >> 8)& 0xff; 
+0388:  CLRF   37
+0389:  MOVF   29,W
+038A:  MOVLB  00
+038B:  MOVWF  58
+....................    fabData[26] = Ipy_current & 0x00ff;    
+038C:  MOVLB  01
+038D:  MOVF   28,W
+038E:  MOVLB  00
+038F:  MOVWF  59
+....................    //fabData[24] = READ_PIC_ADC(1);                                               
+....................     
+....................    Imz_current = READ_PIC_ADC16(2);                                              // I_panel -Z connected to analog input 2 (AN2) on FAB PIC 
+0390:  MOVLW  02
+0391:  MOVLB  01
+0392:  MOVWF  35
+0393:  MOVLB  00
+0394:  CALL   1FA
+0395:  MOVF   79,W
+0396:  MOVLB  01
+0397:  MOVWF  27
+0398:  MOVF   78,W
+0399:  MOVWF  26
+....................    fabData[27] = (Imz_current >> 8)& 0xff; 
+039A:  CLRF   37
+039B:  MOVF   27,W
+039C:  MOVLB  00
+039D:  MOVWF  5A
+....................    fabData[28] = Imz_current & 0x00ff;      
+039E:  MOVLB  01
+039F:  MOVF   26,W
+03A0:  MOVLB  00
+03A1:  MOVWF  5B
+....................    //fabData[25] = READ_PIC_ADC(2); 
+....................     
+....................    Imy_current = READ_PIC_ADC16(1);                                              // I_panel -Y connected to analog input 1 (AN1) on FAB PIC 
+03A2:  MOVLW  01
+03A3:  MOVLB  01
+03A4:  MOVWF  35
+03A5:  MOVLB  00
+03A6:  CALL   1FA
+03A7:  MOVF   79,W
+03A8:  MOVLB  01
+03A9:  MOVWF  25
+03AA:  MOVF   78,W
+03AB:  MOVWF  24
+....................    fabData[29] = (Imy_current >> 8)& 0xff; 
+03AC:  CLRF   37
+03AD:  MOVF   25,W
+03AE:  MOVLB  00
+03AF:  MOVWF  5C
+....................    fabData[30] = Imy_current & 0x00ff;      
+03B0:  MOVLB  01
+03B1:  MOVF   24,W
+03B2:  MOVLB  00
+03B3:  MOVWF  5D
+....................    //fabData[26] = READ_PIC_ADC(3); 
+....................     
+....................    Ipz_current = READ_PIC_ADC16(5);                                              // I_panel +Z connected to analog input 5 (AN5) on FAB PIC 
+03B4:  MOVLW  05
+03B5:  MOVLB  01
+03B6:  MOVWF  35
+03B7:  MOVLB  00
+03B8:  CALL   1FA
+03B9:  MOVF   79,W
+03BA:  MOVLB  01
+03BB:  MOVWF  23
+03BC:  MOVF   78,W
+03BD:  MOVWF  22
+....................    fabData[31] = (Ipz_current >> 8)& 0xff; 
+03BE:  CLRF   37
+03BF:  MOVF   23,W
+03C0:  MOVLB  00
+03C1:  MOVWF  5E
+....................    fabData[32] = Ipz_current & 0x00ff;    
+03C2:  MOVLB  01
+03C3:  MOVF   22,W
+03C4:  MOVLB  00
+03C5:  MOVWF  5F
+....................    //fabData[27] = READ_PIC_ADC(5); 
+....................        
+....................    RAW_current = READ_PIC_ADC16(6);                                              // Raw Current (I_raw - measures the raw battery output to load after passing through many components)  
+03C6:  MOVLW  06
+03C7:  MOVLB  01
+03C8:  MOVWF  35
+03C9:  MOVLB  00
+03CA:  CALL   1FA
+03CB:  MOVF   79,W
+03CC:  MOVLB  01
+03CD:  MOVWF  21
+03CE:  MOVF   78,W
+03CF:  MOVWF  20
+....................    fabData[33] = (RAW_current >> 8)& 0xff;                                       // This should be similar to Ibat. It is connected to analog input 6 (AN6) on FAB PIC 
+03D0:  CLRF   37
+03D1:  MOVF   21,W
+03D2:  MOVLB  00
+03D3:  MOVWF  60
+....................    fabData[34] = RAW_current & 0x00ff;  
+03D4:  MOVLB  01
+03D5:  MOVF   20,W
+03D6:  MOVLB  00
+03D7:  MOVWF  61
+....................    //fabData[28] = READ_PIC_ADC(6); 
+....................     
+....................    fabData[35] = READ_PIC_ADC(8);                                                // Source Voltage (Vsrc - Combined Voltage from solar panels) connected to analog input 8 (AN8) on FAB PIC     
+03D8:  MOVLW  08
+03D9:  MOVLB  01
+03DA:  MOVWF  35
+03DB:  MOVLB  00
+03DC:  CALL   340
+03DD:  MOVF   78,W
+03DE:  MOVWF  62
+....................     
+....................    fabData[36] = READ_PIC_ADC(9);                                                // Raw Voltage (Vraw - measures the raw battery output to load after passing through many components)     
+03DF:  MOVLW  09
+03E0:  MOVLB  01
+03E1:  MOVWF  35
+03E2:  MOVLB  00
+03E3:  CALL   340
+03E4:  MOVF   78,W
+03E5:  MOVWF  63
+....................                                                                                  // This should be similar to Vbat. It connected to analog input 9 (AN9) on FAB PIC  
+....................  //====================== reading the SRC current ===========================//  
+....................     
+....................      
+....................    SRC_current = READ_PIC_ADC16(11);                                            // Source Current (Isrc - Combined Current from solar panels) connected to analog input 8 (AN8) on FAB PIC  
+03E6:  MOVLW  0B
+03E7:  MOVLB  01
+03E8:  MOVWF  35
+03E9:  MOVLB  00
+03EA:  CALL   1FA
+03EB:  MOVF   79,W
+03EC:  MOVWF  6D
+03ED:  MOVF   78,W
+03EE:  MOVWF  6C
+....................    fabData[37] = (SRC_current >> 8)& 0xff;                                      // This should match the ~sum of the currents from all the individual panels 
+03EF:  MOVF   6D,W
+03F0:  MOVLB  01
+03F1:  MOVWF  36
+03F2:  CLRF   37
+03F3:  MOVF   36,W
+03F4:  MOVLB  00
+03F5:  MOVWF  64
+....................    fabData[38] = SRC_current & 0x00ff; 
+03F6:  MOVF   6C,W
+03F7:  MOVWF  65
+....................     
+.................... //!   for(int k=0; k<100; k++) 
+.................... //!   { 
+.................... //!      SET_ADC_CHANNEL(11);                                                      //  routing nth channel to adc 
+.................... //!      delay_us(10); 
+.................... //!      SRC_current = SRC_current + READ_ADC();  
+.................... //!      delay_ms(1); 
+.................... //!   } 
+.................... //!    
+.................... //!   SRC_current= SRC_current/100; 
+.................... //!    
+.................... //!   fabData[31] = (SRC_current >> 8)& 0xff; 
+.................... //!   fabData[32] = SRC_current & 0x00ff; 
+.................... //!    
+.................... //!   SRC_current = 0; 
+....................         
+.................... //======================end of reading SRC Current===========================// 
+....................        
+....................    fabData[39] = READ_PIC_ADC(10);                                                //battery voltage - Ibatt to analog input 10 (AN5) on FAB PIC 
+03F8:  MOVLW  0A
+03F9:  MOVLB  01
+03FA:  MOVWF  35
+03FB:  MOVLB  00
+03FC:  CALL   340
+03FD:  MOVF   78,W
+03FE:  MOVWF  66
+....................        
+.................... //============================ reading the Battery current ==================================//  
+....................     
+....................    bat_current = READ_PIC_ADC16(12); 
+03FF:  MOVLW  0C
+0400:  MOVLB  01
+0401:  MOVWF  35
+0402:  MOVLB  00
+0403:  CALL   1FA
+0404:  MOVF   79,W
+0405:  MOVWF  6F
+0406:  MOVF   78,W
+0407:  MOVWF  6E
+....................    fabData[40] = (bat_current >> 8)& 0xff; 
+0408:  MOVF   6F,W
+0409:  MOVLB  01
+040A:  MOVWF  36
+040B:  CLRF   37
+040C:  MOVF   36,W
+040D:  MOVLB  00
+040E:  MOVWF  67
+....................    fabData[41] = bat_current & 0x00ff; 
+040F:  MOVF   6E,W
+0410:  MOVWF  68
+....................     
+.................... //!   for(int j=0; j<100; j++) 
+.................... //!   { 
+.................... //!      SET_ADC_CHANNEL(12);                                                     //routing nth channel to adc 
+.................... //!      delay_us(10); 
+.................... //!      bat_current = bat_current + READ_ADC();  
+.................... //!      delay_ms(1);       
+.................... //!   } 
+.................... //!    
+.................... //!   bat_current= bat_current/100; 
+.................... //!    
+.................... //!   fabData[34] = (bat_current >> 8)& 0xff; 
+.................... //!   fabData[35] = bat_current & 0x00ff; 
+.................... //!    
+.................... //!   bat_current = 0;  
+....................         
+.................... //==================================end of reading battery Current==============================//      
+....................          
+....................    fabData[42] = READ_PIC_ADC(13);                                          //BAT_TEMP (battery temperature) 
+0411:  MOVLW  0D
+0412:  MOVLB  01
+0413:  MOVWF  35
+0414:  MOVLB  00
+0415:  CALL   340
+0416:  MOVF   78,W
+0417:  MOVWF  69
+....................    fabData[43] = 0;                                                         //BAT_HEATER = 0 
+0418:  CLRF   6A
+0419:  MOVLP  00
+041A:  GOTO   4F3 (RETURN)
+....................     
+.................... } 
+....................  
+.................... //!void battery_heater() 
+.................... //!{ 
+.................... //!   fabData[36] = READ_PIC_ADC(13);                                            //BAT_TEMP (battery temperature) 
+.................... //!   fabData[33] = READ_PIC_ADC(10);                                            //battery voltage 
+.................... //!   if (heaterManual==0)                                                       //automatic mode only operate if heaterManual flag is low 
+.................... //!   { 
+.................... //!      if ((fabData[36] > 0xB0) && (fabData[33] > 0x93))                       //battery temperature > 176(menor a 8C) && battery voltage > 147(mayor a 3.8v) 
+.................... //!      { 
+.................... //!         RD0 = 1;                                                             //HEAT_CTL = HIGH 
+.................... //!         fabData[37] = 1;                                                     //Heater Flag in HIGH 
+.................... //!      } 
+.................... //!       
+.................... //!      else 
+.................... //!      { 
+.................... //!         RD0 = 0;                                                              //HEAT_CTL = LOW 
+.................... //!         fabData[37] = 0;                                                     //Heater Flag in LOW 
+.................... //!      } 
+.................... //!   } 
+.................... //!} 
+....................  
+.................... void kill_status(void)                                                           //Check KILL_FAB_STAT and KILL_OBC_FAB_STAT 
+.................... { 
+....................    if(RD3 == 1 && RC1 == 0) 
+*
+0074:  BTFSS  0F.3
+0075:  GOTO   07B
+0076:  BTFSC  0E.1
+0077:  GOTO   07B
+....................    { 
+....................      
+....................       fabData[44] = 0x10; 
+0078:  MOVLW  10
+0079:  MOVWF  6B
+....................      
+....................    } 
+007A:  GOTO   08A
+....................     
+....................     else if(RD3 == 1 && RC1 == 1) 
+007B:  BTFSS  0F.3
+007C:  GOTO   082
+007D:  BTFSS  0E.1
+007E:  GOTO   082
+....................     { 
+....................      
+....................       fabData[44] = 0x11; 
+007F:  MOVLW  11
+0080:  MOVWF  6B
+....................      
+....................     } 
+0081:  GOTO   08A
+....................     
+....................    else if(RD3 == 0 && RC1 == 1) 
+0082:  BTFSC  0F.3
+0083:  GOTO   089
+0084:  BTFSS  0E.1
+0085:  GOTO   089
+....................    { 
+....................      
+....................       fabData[44] = 0x01; 
+0086:  MOVLW  01
+0087:  MOVWF  6B
+....................  
+....................    } 
+0088:  GOTO   08A
+....................     
+....................    else 
+....................    { 
+....................      
+....................       fabData[44] = 0x00; 
+0089:  CLRF   6B
+....................  
+....................    } 
+....................     
+....................    return; 
+008A:  RETURN
+.................... } 
+....................  
+.................... void CLR_FAB_DATA() 
+.................... { 
+....................    for(int i=0; i<45; i++) 
+*
+0438:  MOVLB  01
+0439:  CLRF   35
+043A:  MOVF   35,W
+043B:  SUBLW  2C
+043C:  BTFSS  03.0
+043D:  GOTO   448
+....................    { 
+....................       fabData[i] = 0; 
+043E:  MOVLW  1F
+043F:  ADDWF  35,W
+0440:  MOVWF  04
+0441:  MOVLW  20
+0442:  MOVWF  05
+0443:  BTFSC  03.0
+0444:  INCF   05,F
+0445:  CLRF   00
+0446:  INCF   35,F
+0447:  GOTO   43A
+....................    } 
+0448:  MOVLP  00
+0449:  MOVLB  00
+044A:  GOTO   517 (RETURN)
+.................... } 
+....................  
+.................... //!void make_adcsData()                                                             // make adcs data array -> adcsData[26] 
+.................... //!{ 
+.................... //!   adcsData[0] = 0xAA; 
+.................... //!   for(int i=1; i<9; i++) 
+.................... //!   { 
+.................... //!      adcsData[i] = fabData[i]; 
+.................... //!   } 
+.................... //!   for( i=11; i<28; i++) 
+.................... //!   { 
+.................... //!      adcsData[i-2] = fabData[i]; 
+.................... //!   }    
+.................... //!      return; 
+.................... //!} 
+....................  
+....................  
+.................... BYTE rx_chars[8] = {0};//array to get main PIC command 
+....................  
+.................... #int_rda                                                                         //UART1 Interrupt 
+.................... void serial_isr(){ 
+....................   
+....................   rx_chars[0] = fgetc(MPIC);                                                     //Get main PIC command 
+*
+0031:  MOVF   78,W
+0032:  MOVLB  01
+0033:  MOVWF  2C
+....................   //CMD_FROM_MPIC[0] = fgetc(MPIC); 
+0034:  MOVLB  00
+0035:  BCF    11.5
+0036:  MOVLP  00
+0037:  GOTO   016
+.................... }  
+....................  
+....................  
+.................... void main() 
+*
+044B:  MOVLW  7A
+044C:  MOVLB  01
+044D:  MOVWF  19
+044E:  MOVLB  00
+044F:  CLRF   24
+0450:  CLRF   25
+0451:  CLRF   3E
+0452:  MOVLB  03
+0453:  BSF    1F.3
+0454:  MOVLW  A0
+0455:  MOVWF  1B
+0456:  MOVLW  01
+0457:  MOVWF  1C
+0458:  MOVLW  A6
+0459:  MOVWF  1E
+045A:  MOVLW  90
+045B:  MOVWF  1D
+045C:  MOVLB  01
+045D:  BSF    0E.4
+045E:  BCF    0E.5
+045F:  BCF    0E.3
+0460:  MOVLB  02
+0461:  BSF    0E.3
+0462:  MOVLB  01
+0463:  BCF    0E.2
+0464:  MOVLB  02
+0465:  BCF    0E.2
+0466:  MOVLB  00
+0467:  CLRF   6D
+0468:  CLRF   6C
+0469:  CLRF   6F
+046A:  CLRF   6E
+046B:  MOVLB  01
+046C:  CLRF   21
+046D:  CLRF   20
+046E:  CLRF   23
+046F:  CLRF   22
+0470:  CLRF   25
+0471:  CLRF   24
+0472:  CLRF   27
+0473:  CLRF   26
+0474:  CLRF   29
+0475:  CLRF   28
+0476:  CLRF   2B
+0477:  CLRF   2A
+0478:  CLRF   70
+0479:  MOVLB  03
+047A:  CLRF   0C
+047B:  CLRF   0D
+047C:  CLRF   0E
+047D:  CLRF   0F
+047E:  CLRF   10
+047F:  MOVLB  02
+0480:  CLRF   12
+0481:  CLRF   11
+0482:  GOTO   48C
+0483:  DATA 2D,34
+0484:  DATA 40,34
+0485:  DATA 3F,34
+0486:  DATA 00,34
+0487:  DATA 08,34
+0488:  DATA 40,34
+0489:  DATA AC,34
+048A:  DATA 00,34
+048B:  DATA 00,34
+048C:  MOVLW  04
+048D:  MOVWF  05
+048E:  MOVLW  83
+048F:  MOVWF  04
+0490:  BSF    05.7
+0491:  MOVIW  [FSR0++],W
+0492:  MOVWF  77
+0493:  XORLW  00
+0494:  BTFSC  03.2
+0495:  GOTO   4A6
+0496:  MOVIW  [FSR0++],W
+0497:  MOVWF  78
+0498:  BTFSC  78.7
+0499:  GOTO   49E
+049A:  ANDLW  0F
+049B:  MOVWF  07
+049C:  MOVIW  [FSR0++],W
+049D:  MOVWF  06
+049E:  BTFSC  78.6
+049F:  MOVIW  [FSR0++],W
+04A0:  BTFSS  78.6
+04A1:  MOVIW  [FSR0++],W
+04A2:  MOVWI  W,[FSR1++]
+04A3:  DECFSZ 77,F
+04A4:  GOTO   4A0
+04A5:  GOTO   491
+.................... {   
+....................    heaterManual = 1;                                                             //Heater Auto mode as default 
+04A6:  MOVLW  01
+04A7:  MOVWF  70
+....................    fabData[0] = 0x33;                                                            //FAB data header 
+04A8:  MOVLW  33
+04A9:  MOVLB  00
+04AA:  MOVWF  3F
+....................    
+....................    TRISD7 = 0; LATD7 = 1;                                                        //RD7=HIGH, enabling buffer for voltage measurements (PWR_BAT, SRC_V, RAW_V) 
+04AB:  MOVLB  01
+04AC:  BCF    0F.7
+04AD:  MOVLB  02
+04AE:  BSF    0F.7
+....................     
+....................    TRISD0 = 0; LATD0 = 0;                                                        //RD0=LOW, disabling battery heater 
+04AF:  MOVLB  01
+04B0:  BCF    0F.0
+04B1:  MOVLB  02
+04B2:  BCF    0F.0
+....................     
+....................    check = read_eeprom(check_memory);                                            //reads position 5 from EEPROM, returns int8 
+04B3:  MOVLW  05
+04B4:  MOVLB  03
+04B5:  MOVWF  11
+04B6:  BCF    15.7
+04B7:  BSF    15.0
+04B8:  MOVF   13,W
+04B9:  MOVLB  00
+04BA:  MOVWF  25
+....................    kill_flag = read_eeprom(memory);                                              //reads position 10 from EEPROM, returns int8 
+04BB:  MOVLW  0A
+04BC:  MOVLB  03
+04BD:  MOVWF  11
+04BE:  BCF    15.7
+04BF:  BSF    15.0
+04C0:  MOVF   13,W
+04C1:  MOVLB  00
+04C2:  MOVWF  24
+....................  
+....................    if ((check!=8)&&(kill_flag!=5)) 
+04C3:  MOVF   25,W
+04C4:  SUBLW  08
+04C5:  BTFSC  03.2
+04C6:  GOTO   4CE
+04C7:  MOVF   24,W
+04C8:  SUBLW  05
+04C9:  BTFSC  03.2
+04CA:  GOTO   4CE
+....................       { 
+....................         kill_fab_forward();                                                      //kill switch FAB forward mode 
+04CB:  CALL   038
+....................         kill_OBC_forward();                                                      //kill switch OBC forward mode 
+04CC:  CALL   049
+....................       } 
+04CD:  GOTO   4D0
+....................    else 
+....................       {      
+....................         kill_fab_reverse();                                                      //kill switch FAB reverse mode 
+04CE:  CALL   056
+....................         kill_OBC_reverse();                                                      //kill switch OBC reverse mode 
+04CF:  CALL   067
+....................       } 
+....................        
+....................     
+....................     SETUP_ADC(ADC_CLOCK_INTERNAL);                                               //Use internal clock 
+04D0:  MOVLB  01
+04D1:  BSF    1E.4
+04D2:  BSF    1E.5
+04D3:  BCF    1E.6
+04D4:  BSF    1E.7
+04D5:  BSF    1D.0
+....................     SETUP_ADC_PORTS(ALL_ANALOG);                                                 //setting all analog ports (A0 A1 A2 A3 A5 E0 E1 E2 B2 B3 B1 B4 B0 B5 D1) 
+04D6:  BCF    1E.0
+04D7:  BCF    1E.1
+04D8:  BCF    1E.2
+04D9:  MOVLW  2F
+04DA:  MOVLB  03
+04DB:  MOVWF  0C
+04DC:  MOVLW  07
+04DD:  MOVWF  10
+04DE:  MOVLW  3F
+04DF:  MOVWF  0D
+04E0:  MOVLW  02
+04E1:  MOVWF  0F
+....................     
+....................     enable_interrupts(INT_RDA);                                                  //UART interrupt 
+04E2:  MOVLB  01
+04E3:  BSF    11.5
+....................     enable_interrupts(global);  
+04E4:  MOVLW  C0
+04E5:  IORWF  0B,F
+....................  
+....................    while(TRUE) 
+....................    { 
+....................       
+....................       //battery_heater();                                                        //Control Heater, Check battery temperature and battery voltage. fabData[37] REMOVED FOR POWER SAVING 
+....................       kill_status();                                                             //Check KILL_FAB_STAT and KILL_OBC_FAB_STAT fabData[38] 
+04E6:  MOVLB  00
+04E7:  CALL   074
+....................       if(rx_chars[0] == 0x61)                                                    //receiving sensor data request interrupt 
+04E8:  MOVLB  01
+04E9:  MOVF   2C,W
+04EA:  SUBLW  61
+04EB:  BTFSS  03.2
+04EC:  GOTO   518
+....................       { 
+....................          fabData[0] = 0x33;  
+04ED:  MOVLW  33
+04EE:  MOVLB  00
+04EF:  MOVWF  3F
+....................          temperature();                                                          //reads the temperature values ??and saves them in the array fabDATA [] 
+04F0:  GOTO   0F1
+....................          voltages();                                                              //reads the voltage values ??and saves them in the array fabDATA [] 
+04F1:  GOTO   194
+....................          adc_FAB();                                                              //read the ADC from the PIC 
+04F2:  GOTO   36C
+....................           
+....................          rx_chars[0]=0; 
+04F3:  MOVLB  01
+04F4:  CLRF   2C
+....................           
+....................          delay_ms(5); 
+04F5:  MOVLW  05
+04F6:  MOVWF  35
+04F7:  MOVLB  00
+04F8:  CALL   41B
+....................          RD0 = 0;                                                                //HEAT_CTL = LOW 
+04F9:  BCF    0F.0
+....................          kill_status();                                                          //Check KILL_FAB_STAT and KILL_OBC_FAB_STAT fabData[38] 
+04FA:  CALL   074
+....................          for (int i=0;i<45;i++) 
+04FB:  MOVLB  01
+04FC:  CLRF   34
+04FD:  MOVF   34,W
+04FE:  SUBLW  2C
+04FF:  BTFSS  03.0
+0500:  GOTO   515
+....................          {                                                                       //Send fabDATA to Main PIC 
+....................             fputc(fabData[i],MPIC); 
+0501:  MOVLW  1F
+0502:  ADDWF  34,W
+0503:  MOVWF  04
+0504:  MOVLW  20
+0505:  MOVWF  05
+0506:  BTFSC  03.0
+0507:  INCF   05,F
+0508:  MOVF   00,W
+0509:  MOVWF  35
+050A:  MOVF   35,W
+050B:  MOVLB  00
+050C:  GOTO   431
+....................             delay_ms(1); 
+050D:  MOVLW  01
+050E:  MOVLB  01
+050F:  MOVWF  35
+0510:  MOVLB  00
+0511:  CALL   41B
+0512:  MOVLB  01
+0513:  INCF   34,F
+0514:  GOTO   4FD
+....................          } 
+....................          CLR_FAB_DATA(); 
+0515:  MOVLB  00
+0516:  GOTO   438
+0517:  MOVLB  01
+....................       } 
+....................              
+.................... //! /* Command for sending panels info for adcs*/    
+.................... //!      if(rx_chars[0] == 0x69)                                                   //receiving panels data request interrupt 
+.................... //!      {              
+.................... //!         temperature();                                                             //reads the temperature values ??and saves them in the array fabDATA [] 
+.................... //!         voltages();                                                             //reads the voltage values ??and saves them in the array fabDATA [] 
+.................... //!         adc_FAB();                                                              //read the ADC from the PIC 
+.................... //!         rx_chars[0]=0;  
+.................... //!         delay_ms(10); 
+.................... //!         make_adcsData();                                                        //make adcsData array 
+.................... //!         for (int i=0;i<26;i++) 
+.................... //!         {                                                                       //Send adcsDATA to Main PIC 
+.................... //!            fputc(adcsData[i],MPIC);         
+.................... //!         }   
+.................... //!      }             
+....................              
+.................... /*Command for Kill switch*/          
+....................       if(rx_chars[0] == 0x17) 
+0518:  MOVF   2C,W
+0519:  SUBLW  17
+051A:  BTFSS  03.2
+051B:  GOTO   552
+....................       {                                                                          //receiving Kill switch off interrupt 
+....................          rx_chars[0]=0; 
+051C:  CLRF   2C
+....................           
+....................          delay_ms(10); 
+051D:  MOVLW  0A
+051E:  MOVWF  35
+051F:  MOVLB  00
+0520:  CALL   41B
+....................           
+....................          kill_fab_reverse();                                                      //kill switch FAB reverse mode 
+0521:  CALL   056
+....................          kill_OBC_reverse();                                                      //kill switch OBC reverse mode 
+0522:  CALL   067
+....................           
+....................          write_eeprom(check_memory,8); 
+0523:  MOVF   0B,W
+0524:  MOVWF  77
+0525:  BCF    0B.7
+0526:  MOVLW  05
+0527:  MOVLB  03
+0528:  MOVWF  11
+0529:  MOVLW  08
+052A:  MOVWF  13
+052B:  BCF    15.7
+052C:  BSF    15.2
+052D:  MOVLW  55
+052E:  MOVWF  16
+052F:  MOVLW  AA
+0530:  MOVWF  16
+0531:  BSF    15.1
+0532:  BTFSC  15.1
+0533:  GOTO   532
+0534:  BCF    15.2
+0535:  MOVF   77,W
+0536:  IORWF  0B,F
+....................          check=8; 
+0537:  MOVLW  08
+0538:  MOVLB  00
+0539:  MOVWF  25
+....................          write_eeprom(memory,5); 
+053A:  MOVF   0B,W
+053B:  MOVWF  77
+053C:  BCF    0B.7
+053D:  MOVLW  0A
+053E:  MOVLB  03
+053F:  MOVWF  11
+0540:  MOVLW  05
+0541:  MOVWF  13
+0542:  BCF    15.7
+0543:  BSF    15.2
+0544:  MOVLW  55
+0545:  MOVWF  16
+0546:  MOVLW  AA
+0547:  MOVWF  16
+0548:  BSF    15.1
+0549:  BTFSC  15.1
+054A:  GOTO   549
+054B:  BCF    15.2
+054C:  MOVF   77,W
+054D:  IORWF  0B,F
+....................          kill_flag=5; 
+054E:  MOVLW  05
+054F:  MOVLB  00
+0550:  MOVWF  24
+0551:  MOVLB  01
+....................       } 
+....................        
+....................       if(rx_chars[0] == 0x18)                                                     //receiving Kill switch on interrupt 
+0552:  MOVF   2C,W
+0553:  SUBLW  18
+0554:  BTFSS  03.2
+0555:  GOTO   58C
+....................       {                                               
+....................        
+....................          rx_chars[0]=0; 
+0556:  CLRF   2C
+....................           
+....................          delay_ms(10); 
+0557:  MOVLW  0A
+0558:  MOVWF  35
+0559:  MOVLB  00
+055A:  CALL   41B
+....................           
+....................          kill_fab_forward();                                                        //kill switch FAB forward mode 
+055B:  CALL   038
+....................          kill_OBC_forward();                                                        //kill switch OBC forward mode 
+055C:  CALL   049
+....................           
+....................          write_eeprom(check_memory,1); 
+055D:  MOVF   0B,W
+055E:  MOVWF  77
+055F:  BCF    0B.7
+0560:  MOVLW  05
+0561:  MOVLB  03
+0562:  MOVWF  11
+0563:  MOVLW  01
+0564:  MOVWF  13
+0565:  BCF    15.7
+0566:  BSF    15.2
+0567:  MOVLW  55
+0568:  MOVWF  16
+0569:  MOVLW  AA
+056A:  MOVWF  16
+056B:  BSF    15.1
+056C:  BTFSC  15.1
+056D:  GOTO   56C
+056E:  BCF    15.2
+056F:  MOVF   77,W
+0570:  IORWF  0B,F
+....................          check=1; 
+0571:  MOVLW  01
+0572:  MOVLB  00
+0573:  MOVWF  25
+....................          write_eeprom(memory,1); 
+0574:  MOVF   0B,W
+0575:  MOVWF  77
+0576:  BCF    0B.7
+0577:  MOVLW  0A
+0578:  MOVLB  03
+0579:  MOVWF  11
+057A:  MOVLW  01
+057B:  MOVWF  13
+057C:  BCF    15.7
+057D:  BSF    15.2
+057E:  MOVLW  55
+057F:  MOVWF  16
+0580:  MOVLW  AA
+0581:  MOVWF  16
+0582:  BSF    15.1
+0583:  BTFSC  15.1
+0584:  GOTO   583
+0585:  BCF    15.2
+0586:  MOVF   77,W
+0587:  IORWF  0B,F
+....................          kill_flag=1; 
+0588:  MOVLW  01
+0589:  MOVLB  00
+058A:  MOVWF  24
+058B:  MOVLB  01
+....................       } 
+....................        
+....................       /*Command for Battery Heater*/            
+.................... //!      if(rx_chars[0] == 0x01)                                                 //receiving Battery Heater Turn ON CMD 
+.................... //!      {                                               
+.................... //!         rx_chars[0]=0; 
+.................... //!         delay_ms(10); 
+.................... //!         RD0 = 1;                                                             //HEAT_CTL = HIGH 
+.................... //!         fabData[37] = 1;                                                     //Flag in HIGH 
+.................... //!         heaterManual = 1;                                                    //heater Manual Mode   
+.................... //!      } 
+.................... //!       
+....................       if(rx_chars[0] == 0x02)                                                     //receiving Battery Heater Turn OFF CMD 
+058C:  MOVF   2C,W
+058D:  SUBLW  02
+058E:  BTFSS  03.2
+058F:  GOTO   59A
+....................       {                                               
+....................          rx_chars[0]=0; 
+0590:  CLRF   2C
+....................          delay_ms(10); 
+0591:  MOVLW  0A
+0592:  MOVWF  35
+0593:  MOVLB  00
+0594:  CALL   41B
+....................          RD0 = 0;                                                                //HEAT_CTL = LOW 
+0595:  BCF    0F.0
+....................          fabData[37] = 0;                                                        //Heater Flag in LOW 
+0596:  CLRF   64
+....................          heaterManual = 1;                                                       //heater Manual Mode 
+0597:  MOVLW  01
+0598:  MOVWF  70
+0599:  MOVLB  01
+....................       } 
+059A:  GOTO   4E6
+.................... //!       
+.................... //!      if(rx_chars[0] == 0x03)                                                 //receiving Battery Heater Auto Mode 
+.................... //!      {                                               
+.................... //!         rx_chars[0]=0; 
+.................... //!         delay_ms(10); 
+.................... //!         heaterManual = 0;                                                      //heater Auto Mode 
+.................... //!      } 
+.................... //!       
+....................    } 
+....................  
+.................... } 
+....................  
+059B:  SLEEP
+....................  
+
+Configuration Fuses:
+   Word  1: 3FC4   INTRC_IO NOWDT PUT MCLR NOPROTECT NOCPD BROWNOUT NOCLKOUT IESO FCMEN
+   Word  2: 1E23   NOWRT NOVCAP PLL_SW STVREN BORV19 NOLPBOR NODEBUG NOLVP

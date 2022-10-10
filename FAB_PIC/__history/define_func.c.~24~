@@ -1,0 +1,110 @@
+////////////////////////////BIRDS-4 ADC Address Definitions//////////////////////////
+//!#define pY_vol 0xA330
+//!#define pX_vol 0xA730
+//!#define mZ_vol 0xAB30
+//!#define mX_vol 0xAF30
+//!//#define mX_vol 0xB330
+//!#define pZ_vol 0xB730
+//!
+//!#define pY_temp 0x8330
+//!#define pX_temp 0x8730
+//!#define mZ_temp 0x8B30
+//!#define mX_temp 0x8F30
+//!//#define mY_temp 0x9330
+//!#define BPB_temp 0x9730
+//!//#define pZ_temp1 0x9B30
+//!#define pZ_temp2 0x9F30
+//!////////////////////////////BIRDS-5 ADC Address Definitions//////////////////////////
+//!
+//!#define mX_vol 0xA330
+//!#define pY_vol 0xA730
+//!#define mZ_vol 0xAB30
+//!#define mY_vol 0xAF30
+//!#define pZ_vol 0xB730
+//!
+//!#define mX_temp 0x8330
+//!#define pY_temp 0x8730 vin1
+//!#define mZ_temp 0x8B30 vin2
+//!#define mY_temp 0x8F30
+//!#define pZ_temp2 0x9F30
+//!#define pX_temp 0x9330
+
+
+////////////////////////////BIRDS-5 ADC Address Definitions//////////////////////////
+
+#define mX_vol 0xA330
+#define pY_vol 0xA730
+#define mZ_vol 0xAB30
+#define mY_vol 0xAF30
+#define pZ_vol 0xB730
+
+#define pX_temp 0x8330                                                           //vin0
+#define mY_temp 0x8730                                                           //vin1
+#define mZ_temp 0x8B30                                                           //vin2
+#define pY_temp 0x8F30                                                           //vin3
+#define mX_temp 0x9330                                                           //vin4
+#define pZ_temp2 0x9F30                                                          //vin7 (vin8, would also work, both are connected to pZ)
+
+
+//#define pZ_temp1 0x9B30
+
+#define memory 10
+#define check_memory 5
+
+int8 kill_flag = 0;
+int8 check = 0;
+
+unsigned int16 vol_pY;
+unsigned int16 vol_mY;
+unsigned int16 vol_mX;
+//unsigned int16 vol_pX;
+unsigned int16 vol_pZ;
+unsigned int16 vol_mZ;
+
+unsigned int16 temp_pY;
+unsigned int16 temp_mY;
+unsigned int16 temp_mX;
+unsigned int16 temp_pX;
+//unsigned int16 temp_pZ1;
+unsigned int16 temp_pZ2;
+unsigned int16 temp_mZ;
+//unsigned int16 temp_BPB;
+
+void kill_fab_forward(void)
+{
+   
+   TRISD4 = 0; LATD4 = 1;                                                        // kill FAB EN high
+   TRISD5 = 0; LATD5 = 1;                                                        // kill FAB 1 high
+   TRISD6 = 0; LATD6 = 0;                                                        // kill FAB 2 low
+   TRISD3 = 0; RD3 = 0;                                                          //kill FAB STAT OFF
+
+}
+
+void kill_fab_reverse(void)
+{
+   TRISD4 = 0; LATD4 = 1;                                                        // kill FAB EN high
+   TRISD5 = 0; LATD5 = 0;                                                        // kill FAB 1 low
+   TRISD6 = 0; LATD6 = 1;                                                        // kill FAB 2 high
+   TRISD3 = 0; RD3 = 1;                                                          //kill FAB STAT ON
+
+}
+
+void kill_OBC_forward(void)
+{
+   
+   TRISD2 = 0; LATD2 = 1;                                                        // kill OBC FAB 1 high
+   TRISD1 = 0; LATD1 = 0;                                                        // kill OBC FAB 2 low
+   TRISC1 = 0; RC1 = 0;                                                          //OBC kill FAB STAT OFF
+
+}
+
+void kill_OBC_reverse(void)
+{
+   
+   TRISD2 = 0; LATD2 = 0;                                                        // kill OBC FAB 1 low
+   TRISD1 = 0; LATD1 = 1;                                                        // kill OBC FAB 2 high
+   TRISC1 = 0; RC1 = 1;                                                          //OBC kill FAB STAT ON
+
+}
+
+
