@@ -39,7 +39,17 @@ BIRDS-5 has 5 main missions in total; attitude visualisation, Imaging classifica
 
 ## Organisation structure
 
+```bash
+├── .gitattributes
+├── CPLD
+├── FAB_PIC
+│   ├── __history
+├── Main PIC
+├── Mission Boss
+├── RESET PIC
+└── Software Manual
 
+```
 ## Features
 
 
