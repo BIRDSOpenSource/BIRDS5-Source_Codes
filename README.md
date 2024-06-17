@@ -37,14 +37,51 @@ BIRDS-5 has 5 main missions in total; attitude visualisation, Imaging classifica
 ## Organisation structure
 
 ```bash
+
 ├── .gitattributes
 ├── CPLD
+│   └── birds5.vhd
 ├── FAB_PIC
-│   └── __history
+│   ├── ADC_reading_func.c
+│   ├── BIRDS5_FAB_PIC.rar
+│   ├── FAB_PIC_FM.STA
+│   ├── FAB_PIC_FM.c
+│   ├── FAB_PIC_FM.ccspjt
+│   ├── FAB_PIC_FM.cof
+│   ├── FAB_PIC_FM.err
+│   ├── FAB_PIC_FM.esym
+│   ├── FAB_PIC_FM.h
+│   ├── FAB_PIC_FM.hex
+│   ├── FAB_PIC_FM.lst
+│   ├── FAB_PIC_FM.sym
+│   ├── FAB_PIC_FM.tre
+│   ├── FAB_PIC_FM.xsym
+│   ├── PIC16F1789_registers.h
+│   ├── __history
+│   │   ├── ADC_reading_func.c.~41~
+│   │   *
+│   │   ├── ADC_reading_func.c.~90~
+│   │   ├── FAB_PIC_FM.c.~1~
+│   │   *
+│   │   ├── FAB_PIC_FM.h.~63~
+│   │   ├── define_func.c.~1~
+│   │   *
+│   │   └── define_func.c.~44~
+│   └── define_func.c
+├── LICENSE
 ├── Main PIC
+│   └── BIRDS5_Project.rar
 ├── Mission Boss
+│   ├── BIRDS5_Mission_Boss.rar
+│   ├── Mission Boss.c
+│   ├── Mission Boss.h
+│   ├── PIC18F67J94_registers.h
+│   └── function_list.c
+├── README.md
 ├── RESET PIC
+│   └── BIRDS5_Reset_PIC.rar
 └── Software Manual
+    └── BIRDS-5 OBC Manual.docx
 
 ```
 ## Features
