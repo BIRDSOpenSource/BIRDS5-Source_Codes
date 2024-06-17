@@ -43,7 +43,7 @@ BIRDS-5 has 5 main missions in total; attitude visualisation, Imaging classifica
 ├── .gitattributes
 ├── CPLD
 ├── FAB_PIC
-│   ├── __history
+│   └── __history
 ├── Main PIC
 ├── Mission Boss
 ├── RESET PIC
