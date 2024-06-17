@@ -4,9 +4,8 @@
   <img alt="Join the monthly community webinars" src="https://img.shields.io/badge/join_our-monthly_webinars-orange" />
   </a>
 </div>
-<div align="center">
-<img  width="25%" src="https://github.com/BIRDSOpenSource/BIRDS5-CAD/assets/100206676/fd3ff8ed-76a4-4b20-aec6-1a9d83f25005">
-</div>
+
+<img  width="25%" src="https://github.com/BIRDSOpenSource/BIRDS5-CAD/assets/100206676/fd3ff8ed-76a4-4b20-aec6-1a9d83f25005"> <img width="25%" src="https://github.com/BIRDSOpenSource/BIRDS5-CAD/assets/100206676/5cb7bd65-6989-4c46-8026-098282452dca">
 
 
 # BIRDS5-Source_Codes
@@ -14,8 +13,6 @@
 
 
 ## About the BIRDS5 Program:
-
-<img width="50%" src="https://github.com/BIRDSOpenSource/BIRDS5-CAD/assets/100206676/5cb7bd65-6989-4c46-8026-098282452dca">
 
 The Mission Statement of the Project is:
 
